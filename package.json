@@ -1,0 +1,7 @@
+{
+    "name": "ur-json",
+    "main": "src/index.ts",
+    "devDependencies": {
+        "@types/reflect-metadata": "^0.0.5"
+    }
+}
