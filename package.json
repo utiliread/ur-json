@@ -1,5 +1,6 @@
 {
     "name": "ur-json",
+    "version": "1.0.0",
     "main": "src/index.ts",
     "devDependencies": {
         "@types/reflect-metadata": "^0.0.5"
