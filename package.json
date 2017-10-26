@@ -1,8 +1,13 @@
 {
     "name": "ur-json",
     "version": "1.0.0",
-    "main": "src/index.ts",
+    "main": "dist/commonjs/index.js",
+    "types": "dist/commonjs/index.d.ts",
+    "scripts": {
+        "build": "tsc"
+    },
     "devDependencies": {
-        "@types/reflect-metadata": "^0.0.5"
+        "@types/reflect-metadata": "^0.0.5",
+        "typescript": "^2.5.3"
     }
 }
