@@ -5,6 +5,7 @@
         "moduleResolution": "node",
         "declaration": true,
         "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "strict": true,
         "strictNullChecks": false,
         "baseUrl": "src",
