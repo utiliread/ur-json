@@ -1,7 +1,6 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var json_metadata_1 = require("./json-metadata");
-function deserialize(type, source) {
+import { METADATA_KEY } from './json-metadata';
+export function deserialize(type, source) {
     if (source === undefined) {
         return undefined;
     }
@@ -22,7 +21,6 @@ function deserialize(type, source) {
     }
     return destination;
 }
-exports.deserialize = deserialize;
 var isPrimitive = function (object) {
     switch (typeof object) {
         case "string":
@@ -46,7 +44,7 @@ var isArray = function (object) {
     }
 };
 var getJsonPropertyMetadata = function (target, propertyKey) {
-    return Reflect.getOwnMetadata(json_metadata_1.METADATA_KEY, Object.getPrototypeOf(target), propertyKey);
+    return Reflect.getOwnMetadata(METADATA_KEY, Object.getPrototypeOf(target), propertyKey);
 };
 var getValue = function (source, destination, key, propertyMetadata) {
     var propertyName = propertyMetadata.name || key;

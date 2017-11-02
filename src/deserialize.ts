@@ -23,7 +23,7 @@ export function deserialize<T>(type: { new(): T; }, source: any): T {
     return destination;
 }
 
-const isPrimitive = object => {
+const isPrimitive = (object: any) => {
     switch (typeof object) {
         case "string":
         case "number":
@@ -37,7 +37,7 @@ const isPrimitive = object => {
     );
 }
 
-const isArray = object => {
+const isArray = (object: any) => {
     if (object === Array) {
         return true;
     } else if (typeof Array.isArray === "function") {
@@ -58,7 +58,7 @@ const getValue = <T>(source: any, destination: T, key: string, propertyMetadata:
     if (isArray(type)) {
         if (propertyMetadata.ctor) {
             if (isArray(source[propertyName])) {
-                return source[propertyName].map(item => propertyMetadata.ctor(item));
+                return source[propertyName].map((item: any) => propertyMetadata.ctor(item));
             }
             else {
                 return propertyMetadata.ctor(source[propertyName]);
@@ -66,7 +66,7 @@ const getValue = <T>(source: any, destination: T, key: string, propertyMetadata:
         }
         else if (propertyMetadata.type) {
             if (isArray(source[propertyName])) {
-                return source[propertyName].map(item => deserialize(propertyMetadata.type, item));
+                return source[propertyName].map((item: any) => deserialize(propertyMetadata.type, item));
             }
             else {
                 return undefined;
