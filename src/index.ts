@@ -1,3 +1,3 @@
-export { deserialize } from './deserialize';
+export { deserialize, deserializeArray } from './deserialize';
 export { JsonMetadata } from './json-metadata';
 export { jsonProperty } from './json-property';

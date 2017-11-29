@@ -7,7 +7,6 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "strict": true,
-        "strictNullChecks": false,
         "baseUrl": "src",
         "outDir": "dist",
         "lib": [

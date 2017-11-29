@@ -21,6 +21,9 @@ export function deserialize(type, source) {
     }
     return destination;
 }
+export function deserializeArray(type, source) {
+    return source.map(function (x) { return deserialize(type, x); });
+}
 var isPrimitive = function (object) {
     switch (typeof object) {
         case "string":
@@ -49,26 +52,28 @@ var getJsonPropertyMetadata = function (target, propertyKey) {
 var getValue = function (source, destination, key, propertyMetadata) {
     var propertyName = propertyMetadata.name || key;
     var type = getType(destination, key);
+    var propertyMetadataCtor = propertyMetadata.ctor;
+    var propertyMetadataType = propertyMetadata.type;
     if (isArray(type)) {
-        if (propertyMetadata.ctor) {
+        if (propertyMetadataCtor) {
             if (isArray(source[propertyName])) {
-                return source[propertyName].map(function (item) { return propertyMetadata.ctor(item); });
+                return source[propertyName].map(function (item) { return propertyMetadataCtor(item); });
             }
             else {
-                return propertyMetadata.ctor(source[propertyName]);
+                return propertyMetadataCtor(source[propertyName]);
             }
         }
-        else if (propertyMetadata.type) {
+        else if (propertyMetadataType) {
             if (isArray(source[propertyName])) {
-                return source[propertyName].map(function (item) { return deserialize(propertyMetadata.type, item); });
+                return source[propertyName].map(function (item) { return deserialize(propertyMetadataType, item); });
             }
             else {
                 return undefined;
             }
         }
     }
-    if (propertyMetadata.ctor) {
-        return propertyMetadata.ctor(source[propertyName]);
+    if (propertyMetadataCtor) {
+        return propertyMetadataCtor(source[propertyName]);
     }
     else if (!isPrimitive(type)) {
         return deserialize(type, source[propertyName]);

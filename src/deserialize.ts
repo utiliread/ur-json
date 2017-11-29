@@ -1,6 +1,6 @@
 import { JsonMetadata, METADATA_KEY } from './json-metadata';
 
-export function deserialize<T>(type: { new(): T; }, source: any): T {
+export function deserialize<T>(type: { new(): T }, source: any) {
     if (source === undefined) {
         return undefined;
     }
@@ -21,6 +21,10 @@ export function deserialize<T>(type: { new(): T; }, source: any): T {
     }
 
     return destination;
+}
+
+export function deserializeArray<T>(type: { new(): T }, source: any[]) {
+    return source.map(x =>deserialize(type, x));
 }
 
 const isPrimitive = (object: any) => {
@@ -54,19 +58,22 @@ const getJsonPropertyMetadata = <T>(target: any, propertyKey: string): JsonMetad
 const getValue = <T>(source: any, destination: T, key: string, propertyMetadata: JsonMetadata<T>) => {
     let propertyName = propertyMetadata.name || key;
     let type = getType(destination, key);
-
+    const propertyMetadataCtor = propertyMetadata.ctor;
+    const propertyMetadataType = propertyMetadata.type;
+    
     if (isArray(type)) {
-        if (propertyMetadata.ctor) {
+
+        if (propertyMetadataCtor) {
             if (isArray(source[propertyName])) {
-                return source[propertyName].map((item: any) => propertyMetadata.ctor(item));
+                return source[propertyName].map((item: any) => propertyMetadataCtor(item));
             }
             else {
-                return propertyMetadata.ctor(source[propertyName]);
+                return propertyMetadataCtor(source[propertyName]);
             }
         }
-        else if (propertyMetadata.type) {
+        else if (propertyMetadataType) {
             if (isArray(source[propertyName])) {
-                return source[propertyName].map((item: any) => deserialize(propertyMetadata.type, item));
+                return source[propertyName].map((item: any) => deserialize(propertyMetadataType, item));
             }
             else {
                 return undefined;
@@ -74,8 +81,8 @@ const getValue = <T>(source: any, destination: T, key: string, propertyMetadata:
         }
     }
 
-    if (propertyMetadata.ctor) {
-        return propertyMetadata.ctor(source[propertyName]);
+    if (propertyMetadataCtor) {
+        return propertyMetadataCtor(source[propertyName]);
     }
     else if (!isPrimitive(type)) {
         return deserialize(type, source[propertyName]);

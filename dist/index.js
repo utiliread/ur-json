@@ -1,3 +1,3 @@
 "use strict";
-export { deserialize } from './deserialize';
+export { deserialize, deserializeArray } from './deserialize';
 export { jsonProperty } from './json-property';

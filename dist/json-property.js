@@ -6,7 +6,7 @@ import { METADATA_KEY } from './json-metadata';
  */
 export function jsonProperty(nameOrMetadata) {
     var metadata = typeof (nameOrMetadata) === 'string' ? { name: nameOrMetadata } : nameOrMetadata;
-    if (!!metadata.type && !!metadata.ctor) {
+    if (metadata && !!metadata.type && !!metadata.ctor) {
         throw "Only one of type or ctor can be specified";
     }
     return function (target, propertyKey) {

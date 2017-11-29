@@ -5,9 +5,9 @@ import { JsonMetadata, METADATA_KEY } from './json-metadata';
  * @param nameOrMetadata The name of the json property or metadata describing how to construct the property
  */
 export function jsonProperty<T>(nameOrMetadata?: string | JsonMetadata<T>) {
-    let metadata: JsonMetadata<T> = typeof(nameOrMetadata) === 'string' ? { name: nameOrMetadata } : nameOrMetadata;
+    let metadata: JsonMetadata<T> | undefined = typeof(nameOrMetadata) === 'string' ? { name: nameOrMetadata } : nameOrMetadata;
 
-    if (!!metadata.type && !!metadata.ctor) {
+    if (metadata && !!metadata.type && !!metadata.ctor) {
         throw "Only one of type or ctor can be specified";
     }
 
