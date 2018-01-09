@@ -1,2 +1,2 @@
 "use strict";
-export var METADATA_KEY = "jsonProperty";
+export const METADATA_KEY = "jsonProperty";

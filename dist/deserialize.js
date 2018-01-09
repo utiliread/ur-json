@@ -7,9 +7,9 @@ export function deserialize(type, source) {
     if (source === null) {
         return null;
     }
-    var destination = new type();
-    for (var key in destination) {
-        var propertyMetadata = getJsonPropertyMetadata(destination, key);
+    let destination = new type();
+    for (let key in destination) {
+        let propertyMetadata = getJsonPropertyMetadata(destination, key);
         if (propertyMetadata) {
             destination[key] = getValue(source, destination, key, propertyMetadata);
         }
@@ -22,9 +22,9 @@ export function deserialize(type, source) {
     return destination;
 }
 export function deserializeArray(type, source) {
-    return source.map(function (x) { return deserialize(type, x); });
+    return source.map(x => deserialize(type, x));
 }
-var isPrimitive = function (object) {
+const isPrimitive = (object) => {
     switch (typeof object) {
         case "string":
         case "number":
@@ -35,7 +35,7 @@ var isPrimitive = function (object) {
         object instanceof Number || object === Number ||
         object instanceof Boolean || object === Boolean);
 };
-var isArray = function (object) {
+const isArray = (object) => {
     if (object === Array) {
         return true;
     }
@@ -46,18 +46,16 @@ var isArray = function (object) {
         return !!(object instanceof Array);
     }
 };
-var getJsonPropertyMetadata = function (target, propertyKey) {
-    return Reflect.getOwnMetadata(METADATA_KEY, Object.getPrototypeOf(target), propertyKey);
-};
-var getValue = function (source, destination, key, propertyMetadata) {
-    var propertyName = propertyMetadata.name || key;
-    var type = getType(destination, key);
-    var propertyMetadataCtor = propertyMetadata.ctor;
-    var propertyMetadataType = propertyMetadata.type;
+const getJsonPropertyMetadata = (target, propertyKey) => Reflect.getOwnMetadata(METADATA_KEY, Object.getPrototypeOf(target), propertyKey);
+const getValue = (source, destination, key, propertyMetadata) => {
+    let propertyName = propertyMetadata.name || key;
+    let type = getType(destination, key);
+    const propertyMetadataCtor = propertyMetadata.ctor;
+    const propertyMetadataType = propertyMetadata.type;
     if (isArray(type)) {
         if (propertyMetadataCtor) {
             if (isArray(source[propertyName])) {
-                return source[propertyName].map(function (item) { return propertyMetadataCtor(item); });
+                return source[propertyName].map((item) => propertyMetadataCtor(item));
             }
             else {
                 return propertyMetadataCtor(source[propertyName]);
@@ -65,7 +63,7 @@ var getValue = function (source, destination, key, propertyMetadata) {
         }
         else if (propertyMetadataType) {
             if (isArray(source[propertyName])) {
-                return source[propertyName].map(function (item) { return deserialize(propertyMetadataType, item); });
+                return source[propertyName].map((item) => deserialize(propertyMetadataType, item));
             }
             else {
                 return undefined;
@@ -82,6 +80,4 @@ var getValue = function (source, destination, key, propertyMetadata) {
         return source[propertyName];
     }
 };
-var getType = function (target, propertyKey) {
-    return Reflect.getOwnMetadata("design:type", Object.getPrototypeOf(target), propertyKey);
-};
+const getType = (target, propertyKey) => Reflect.getOwnMetadata("design:type", Object.getPrototypeOf(target), propertyKey);
