@@ -1,10 +1,7 @@
 "use strict";
 import { METADATA_KEY } from './json-metadata';
 export function deserialize(type, source) {
-    if (source === undefined) {
-        return undefined;
-    }
-    if (source === null) {
+    if (source === undefined || source === null) {
         return null;
     }
     let destination = new type();
@@ -20,9 +17,6 @@ export function deserialize(type, source) {
         }
     }
     return destination;
-}
-export function deserializeArray(type, source) {
-    return source.map(x => deserialize(type, x));
 }
 const isPrimitive = (object) => {
     switch (typeof object) {

@@ -1,10 +1,7 @@
 import { JsonMetadata, METADATA_KEY } from './json-metadata';
 
 export function deserialize<T>(type: { new(): T }, source: any) {
-    if (source === undefined) {
-        return undefined;
-    }
-    if (source === null) {
+    if (source === undefined || source === null) {
         return null;
     }
     let destination = new type();
@@ -21,10 +18,6 @@ export function deserialize<T>(type: { new(): T }, source: any) {
     }
 
     return destination;
-}
-
-export function deserializeArray<T>(type: { new(): T }, source: any[]) {
-    return source.map(x =>deserialize(type, x));
 }
 
 const isPrimitive = (object: any) => {
