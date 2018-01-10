@@ -12,6 +12,9 @@
         "lib": [
             "es2017",
             "dom"
+        ],
+        "types": [
+            "reflect-metadata"
         ]
     }
 }
