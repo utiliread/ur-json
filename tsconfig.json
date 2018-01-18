@@ -1,18 +1,18 @@
 {
     "compilerOptions": {
         "target": "esnext",
-        "module": "esnext",
-        "moduleResolution": "node",
+        // "module": "es2015",
+        // "moduleResolution": "node",
         "declaration": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "strict": true,
-        "baseUrl": "src",
-        "outDir": "dist",
-        "lib": [
-            "es2017",
-            "dom"
-        ],
+        // "baseUrl": "src",
+        // "outDir": "dist",
+        // "lib": [
+        //     "es2017",
+        //     "dom"
+        // ],
         "types": [
             "reflect-metadata"
         ]

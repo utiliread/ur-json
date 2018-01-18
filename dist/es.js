@@ -1,6 +1,6 @@
-"use strict";
-import { METADATA_KEY } from './json-metadata';
-export function deserialize(type, source) {
+const METADATA_KEY = "jsonProperty";
+
+function deserialize(type, source) {
     if (source === undefined || source === null) {
         return null;
     }
@@ -75,3 +75,22 @@ const getValue = (source, destination, key, propertyMetadata) => {
     }
 };
 const getType = (target, propertyKey) => Reflect.getOwnMetadata("design:type", Object.getPrototypeOf(target), propertyKey);
+
+class JsonConverter {
+}
+
+/**
+ * Attribute specifying a property to be serialized
+ * @param nameOrMetadata The name of the json property or metadata describing how to construct the property
+ */
+function jsonProperty(nameOrMetadata) {
+    let metadata = typeof (nameOrMetadata) === 'string' ? { name: nameOrMetadata } : nameOrMetadata;
+    if (metadata && !!metadata.type && !!metadata.ctor) {
+        throw "Only one of type or ctor can be specified";
+    }
+    return function (target, propertyKey) {
+        Reflect.defineMetadata(METADATA_KEY, metadata, target, propertyKey);
+    };
+}
+
+export { deserialize, JsonConverter, jsonProperty };

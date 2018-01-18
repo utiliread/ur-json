@@ -1,15 +1,18 @@
 {
     "name": "ur-json",
     "version": "1.2.0",
-    "main": "dist/index.js",
+    "main": "dist/commonjs.js",
+    "module": "dist/es.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "build": "tsc",
+        "build": "rollup -c",
         "clean": "rimraf dist"
     },
     "devDependencies": {
-        "reflect-metadata": "^0.1.10",
+        "reflect-metadata": "^0.1.12",
         "rimraf": "^2.6.2",
-        "typescript": "^2.5.3"
+        "rollup": "^0.54.1",
+        "rollup-plugin-typescript2": "^0.10.0",
+        "typescript": "^2.6.2"
     }
 }
