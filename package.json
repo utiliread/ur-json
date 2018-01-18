@@ -1,6 +1,6 @@
 {
     "name": "ur-json",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "main": "dist/commonjs.js",
     "module": "dist/es.js",
     "types": "dist/index.d.ts",
