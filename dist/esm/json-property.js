@@ -1,23 +1,18 @@
-import { JsonMetadata } from './json-metadata';
-
 export const METADATA_KEY = 'jsonProperty';
-
 /**
  * Attribute specifying a property to be serialized
  * @param nameOrMetadata The name of the json property or metadata describing how to construct the property
  */
-export function jsonProperty(nameOrMetadata?: string | JsonMetadata) {
-    let metadata: JsonMetadata | undefined = typeof(nameOrMetadata) === 'string' ? { name: nameOrMetadata } : nameOrMetadata;
-
+export function jsonProperty(nameOrMetadata) {
+    let metadata = typeof (nameOrMetadata) === 'string' ? { name: nameOrMetadata } : nameOrMetadata;
     if (metadata && !!metadata.type && !!metadata.converter) {
         throw "Only one of type or converter can be specified";
     }
-
-    return function (target: any, propertyKey: string) {
+    return function (target, propertyKey) {
         Reflect.defineMetadata(METADATA_KEY, metadata, target, propertyKey);
     };
 }
-
-export function getPropertyMetadata(target: any, propertyKey: string): JsonMetadata | undefined {
+export function getPropertyMetadata(target, propertyKey) {
     return Reflect.getOwnMetadata(METADATA_KEY, Object.getPrototypeOf(target), propertyKey);
 }
+//# sourceMappingURL=json-property.js.map

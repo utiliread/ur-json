@@ -1,18 +1,16 @@
 {
     "name": "ur-json",
     "version": "1.2.1",
-    "main": "dist/commonjs.js",
-    "module": "dist/es.js",
-    "types": "dist/index.d.ts",
+    "main": "dist/cjs/index.js",
+    "module": "dist/esm/index.js",
+    "types": "dist/esm/index.d.ts",
     "scripts": {
-        "build": "rollup -c",
+        "build": "tsc && tsc -p tsconfig.cjs.json && rimraf dist/cjs/**/*.d.ts",
         "clean": "rimraf dist"
     },
     "devDependencies": {
         "reflect-metadata": "^0.1.12",
         "rimraf": "^2.6.2",
-        "rollup": "^0.54.1",
-        "rollup-plugin-typescript2": "^0.10.0",
-        "typescript": "^2.6.2"
+        "typescript": "^2.7.1"
     }
 }

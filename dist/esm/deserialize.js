@@ -1,38 +1,31 @@
-import { JsonMetadata } from './json-metadata';
 import { getPropertyMetadata } from './json-property';
-
-export function deserialize<T>(type: { new(): T }, source: any) {
+export function deserialize(type, source) {
     if (source === undefined || source === null) {
         return null;
     }
-    
     let destination = new type();
-
     for (let key in destination) {
         let propertyMetadata = getPropertyMetadata(destination, key);
         if (propertyMetadata) {
             destination[key] = getValue(source, destination, key, propertyMetadata);
-        } else {
+        }
+        else {
             if (source[key] !== undefined) {
                 destination[key] = source[key];
             }
         }
     }
-
     return destination;
 }
-
-function getValue<T>(source: any, destination: T, key: string, propertyMetadata: JsonMetadata) {
+function getValue(source, destination, key, propertyMetadata) {
     let propertyName = propertyMetadata.name || key;
     let propertyType = getPropertyType(destination, key);
     const fromJson = propertyMetadata.converter ? propertyMetadata.converter.fromJson : undefined;
-    
     if (isArray(propertyType)) {
         const type = propertyMetadata.type;
-
         if (fromJson) {
             if (isArray(source[propertyName])) {
-                return source[propertyName].map((item: any) => fromJson(item));
+                return source[propertyName].map((item) => fromJson(item));
             }
             else {
                 return fromJson(source[propertyName]);
@@ -40,14 +33,13 @@ function getValue<T>(source: any, destination: T, key: string, propertyMetadata:
         }
         else if (type) {
             if (isArray(source[propertyName])) {
-                return source[propertyName].map((item: any) => deserialize(type, item));
+                return source[propertyName].map((item) => deserialize(type, item));
             }
             else {
                 return undefined;
             }
         }
     }
-
     if (fromJson) {
         return fromJson(source[propertyName]);
     }
@@ -57,33 +49,31 @@ function getValue<T>(source: any, destination: T, key: string, propertyMetadata:
     else {
         return source[propertyName];
     }
-};
-
-function getPropertyType(target: any, propertyKey: string) {
+}
+;
+function getPropertyType(target, propertyKey) {
     return Reflect.getOwnMetadata("design:type", Object.getPrototypeOf(target), propertyKey);
 }
-
-function isArray(object: any) {
+function isArray(object) {
     if (object === Array) {
         return true;
-    } else if (typeof Array.isArray === "function") {
+    }
+    else if (typeof Array.isArray === "function") {
         return Array.isArray(object);
     }
     else {
         return object instanceof Array;
     }
-}  
-
-function isPrimitive(object: any) {
+}
+function isPrimitive(object) {
     switch (typeof object) {
         case "string":
         case "number":
         case "boolean":
             return true;
     }
-    return (
-        object instanceof String || object === String ||
+    return (object instanceof String || object === String ||
         object instanceof Number || object === Number ||
-        object instanceof Boolean || object === Boolean
-    );
+        object instanceof Boolean || object === Boolean);
 }
+//# sourceMappingURL=deserialize.js.map
