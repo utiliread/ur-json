@@ -1,3 +1,3 @@
-export declare function deserialize<T>(type: {
+export declare function modelBind<T>(type: {
     new (): T;
-}, source: any): T | null;
+}, source: any): T | null | undefined;

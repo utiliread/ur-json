@@ -1,9 +1,9 @@
 import { JsonConverter } from './json-converter';
-import { deserialize } from "./deserialize";
 import { jsonProperty } from './json-property';
+import { modelBind } from './deserialize';
 
 export {
-    deserialize,
+    modelBind,
     JsonConverter,
     jsonProperty
 };

@@ -7,9 +7,16 @@ export const METADATA_KEY = 'jsonProperty';
  * @param nameOrMetadata The name of the json property or metadata describing how to construct the property
  */
 export function jsonProperty(nameOrMetadata?: string | JsonMetadata) {
-    let metadata: JsonMetadata | undefined = typeof(nameOrMetadata) === 'string' ? { name: nameOrMetadata } : nameOrMetadata;
+    let metadata: JsonMetadata = {};
+    
+    if (typeof nameOrMetadata === 'string') {
+        metadata.name = nameOrMetadata;
+    }
+    else if (nameOrMetadata) {
+        metadata = nameOrMetadata;
+    }
 
-    if (metadata && !!metadata.type && !!metadata.converter) {
+    if (!!metadata.type && !!metadata.converter) {
         throw "Only one of type or converter can be specified";
     }
 

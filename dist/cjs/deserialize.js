@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const base64_arraybuffer_1 = require("base64-arraybuffer");
 const json_property_1 = require("./json-property");
-function deserialize(type, source) {
+function modelBind(type, source) {
     if (source === undefined || source === null) {
-        return null;
+        return source;
     }
     let destination = new type();
     for (let key in destination) {
@@ -11,15 +12,13 @@ function deserialize(type, source) {
         if (propertyMetadata) {
             destination[key] = getValue(source, destination, key, propertyMetadata);
         }
-        else {
-            if (source[key] !== undefined) {
-                destination[key] = source[key];
-            }
+        else if (source[key] !== undefined) {
+            destination[key] = source[key];
         }
     }
     return destination;
 }
-exports.deserialize = deserialize;
+exports.modelBind = modelBind;
 function getValue(source, destination, key, propertyMetadata) {
     let propertyName = propertyMetadata.name || key;
     let propertyType = getPropertyType(destination, key);
@@ -36,7 +35,7 @@ function getValue(source, destination, key, propertyMetadata) {
         }
         else if (type) {
             if (isArray(source[propertyName])) {
-                return source[propertyName].map((item) => deserialize(type, item));
+                return source[propertyName].map((item) => modelBind(type, item));
             }
             else {
                 return undefined;
@@ -46,8 +45,11 @@ function getValue(source, destination, key, propertyMetadata) {
     if (fromJson) {
         return fromJson(source[propertyName]);
     }
+    else if (propertyType === ArrayBuffer) {
+        return base64_arraybuffer_1.decode(source[propertyName]);
+    }
     else if (!isPrimitive(propertyType)) {
-        return deserialize(propertyType, source[propertyName]);
+        return modelBind(propertyType, source[propertyName]);
     }
     else {
         return source[propertyName];

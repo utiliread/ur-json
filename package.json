@@ -5,12 +5,18 @@
     "module": "dist/esm/index.js",
     "types": "dist/esm/index.d.ts",
     "scripts": {
-        "build": "tsc && tsc -p tsconfig.cjs.json && rimraf dist/cjs/**/*.d.ts",
+        "build": "tsc && tsc -p tsconfig.cjs.json && rimraf dist/cjs/**/*.d.ts dist/*.spec.js*",
+        "test": "karma start --single-run --browsers ChromeHeadless karma.config.js",
+        "watch": "karma start --auto-watch --browsers ChromeDebugging karma.config.js",
         "clean": "rimraf dist"
     },
     "devDependencies": {
         "reflect-metadata": "^0.1.12",
         "rimraf": "^2.6.2",
-        "typescript": "^2.7.1"
+        "typescript": "^2.7.1",
+        "ur-test": "^0.0.1"
+    },
+    "dependencies": {
+        "base64-arraybuffer": "^0.1.5"
     }
 }
