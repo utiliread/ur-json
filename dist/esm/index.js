@@ -1,4 +1,5 @@
 import { jsonProperty } from './json-property';
 import { modelBind } from './deserialize';
-export { modelBind, jsonProperty };
+import { serialize } from './serialize';
+export { serialize, modelBind, jsonProperty };
 //# sourceMappingURL=index.js.map
