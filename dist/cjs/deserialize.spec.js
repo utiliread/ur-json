@@ -10,24 +10,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
-const chai_1 = require("chai");
-const index_1 = require("./index");
-const deserialize_1 = require("./deserialize");
-class Model {
-    constructor() {
+var chai_1 = require("chai");
+var index_1 = require("./index");
+var deserialize_1 = require("./deserialize");
+var Model = /** @class */ (function () {
+    function Model() {
         this.number = undefined;
         this.string = undefined;
         this.arrayBuffer = undefined;
     }
-}
-__decorate([
-    index_1.jsonProperty(),
-    __metadata("design:type", ArrayBuffer)
-], Model.prototype, "arrayBuffer", void 0);
-describe('modelBind', () => {
-    it('should correctly deserialize to model', () => {
-        const source = new Model();
-        const result = deserialize_1.modelBind(Model, JSON.parse('{"number":1337,"string":"hello","arrayBuffer":"Ezc="}'));
+    __decorate([
+        index_1.jsonProperty(),
+        __metadata("design:type", ArrayBuffer)
+    ], Model.prototype, "arrayBuffer", void 0);
+    return Model;
+}());
+describe('modelBind', function () {
+    it('should correctly deserialize to model', function () {
+        var source = new Model();
+        var result = deserialize_1.modelBind(Model, JSON.parse('{"number":1337,"string":"hello","arrayBuffer":"Ezc="}'));
         if (result) {
             chai_1.expect(result.number).equals(1337);
             chai_1.expect(result.string).equals('hello');

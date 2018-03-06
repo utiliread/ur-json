@@ -4,9 +4,9 @@ export function modelBind(type, source) {
     if (source === undefined || source === null) {
         return source;
     }
-    let destination = new type();
-    for (let key in destination) {
-        let propertyMetadata = getPropertyMetadata(destination, key);
+    var destination = new type();
+    for (var key in destination) {
+        var propertyMetadata = getPropertyMetadata(destination, key);
         if (propertyMetadata) {
             destination[key] = getValue(source, destination, key, propertyMetadata);
         }
@@ -17,22 +17,22 @@ export function modelBind(type, source) {
     return destination;
 }
 function getValue(source, destination, key, propertyMetadata) {
-    let propertyName = propertyMetadata.name || key;
-    let propertyType = getPropertyType(destination, key);
-    const fromJson = propertyMetadata.converter ? propertyMetadata.converter.fromJson : undefined;
+    var propertyName = propertyMetadata.name || key;
+    var propertyType = getPropertyType(destination, key);
+    var fromJson = propertyMetadata.converter ? propertyMetadata.converter.fromJson : undefined;
     if (isArray(propertyType)) {
-        const type = propertyMetadata.type;
+        var type_1 = propertyMetadata.type;
         if (fromJson) {
             if (isArray(source[propertyName])) {
-                return source[propertyName].map((item) => fromJson(item));
+                return source[propertyName].map(function (item) { return fromJson(item); });
             }
             else {
                 return fromJson(source[propertyName]);
             }
         }
-        else if (type) {
+        else if (type_1) {
             if (isArray(source[propertyName])) {
-                return source[propertyName].map((item) => modelBind(type, item));
+                return source[propertyName].map(function (item) { return modelBind(type_1, item); });
             }
             else {
                 return undefined;

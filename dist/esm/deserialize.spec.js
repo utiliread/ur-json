@@ -11,21 +11,22 @@ import 'reflect-metadata';
 import { expect } from 'chai';
 import { jsonProperty } from './index';
 import { modelBind } from './deserialize';
-class Model {
-    constructor() {
+var Model = /** @class */ (function () {
+    function Model() {
         this.number = undefined;
         this.string = undefined;
         this.arrayBuffer = undefined;
     }
-}
-__decorate([
-    jsonProperty(),
-    __metadata("design:type", ArrayBuffer)
-], Model.prototype, "arrayBuffer", void 0);
-describe('modelBind', () => {
-    it('should correctly deserialize to model', () => {
-        const source = new Model();
-        const result = modelBind(Model, JSON.parse('{"number":1337,"string":"hello","arrayBuffer":"Ezc="}'));
+    __decorate([
+        jsonProperty(),
+        __metadata("design:type", ArrayBuffer)
+    ], Model.prototype, "arrayBuffer", void 0);
+    return Model;
+}());
+describe('modelBind', function () {
+    it('should correctly deserialize to model', function () {
+        var source = new Model();
+        var result = modelBind(Model, JSON.parse('{"number":1337,"string":"hello","arrayBuffer":"Ezc="}'));
         if (result) {
             expect(result.number).equals(1337);
             expect(result.string).equals('hello');

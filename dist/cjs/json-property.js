@@ -6,7 +6,7 @@ exports.METADATA_KEY = 'jsonProperty';
  * @param nameOrMetadata The name of the json property or metadata describing how to construct the property
  */
 function jsonProperty(nameOrMetadata) {
-    let metadata = {};
+    var metadata = {};
     if (typeof nameOrMetadata === 'string') {
         metadata.name = nameOrMetadata;
     }

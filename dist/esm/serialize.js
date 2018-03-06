@@ -1,6 +1,6 @@
 import { encode } from "base64-arraybuffer";
 export function serialize(source) {
-    return JSON.stringify(source, (key, value) => {
+    return JSON.stringify(source, function (key, value) {
         if (value instanceof ArrayBuffer) {
             return encode(value);
         }

@@ -1,10 +1,10 @@
-export const METADATA_KEY = 'jsonProperty';
+export var METADATA_KEY = 'jsonProperty';
 /**
  * Attribute specifying a property to be serialized
  * @param nameOrMetadata The name of the json property or metadata describing how to construct the property
  */
 export function jsonProperty(nameOrMetadata) {
-    let metadata = {};
+    var metadata = {};
     if (typeof nameOrMetadata === 'string') {
         metadata.name = nameOrMetadata;
     }
