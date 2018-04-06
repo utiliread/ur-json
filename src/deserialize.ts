@@ -1,20 +1,41 @@
+import { getPropertyMetadata, getPropertyNames } from './json-property';
+
 import { JsonMetadata } from './json-metadata';
 import { decode } from 'base64-arraybuffer';
-import { getPropertyMetadata } from './json-property';
 
 export function modelBind<T>(type: { new(): T }, source: any): T | null | undefined {
     if (source === undefined || source === null) {
         return source;
     }
 
-    let destination = new type();
+    const destination: any = new type();
 
-    for (let key in destination) {
-        let propertyMetadata = getPropertyMetadata(destination, key);
+    // Get all the property names that has the jsonProperty attribute
+    const propertyNames = new Set<string>(getPropertyNames(destination));
+
+    if (Object.getPrototypeOf(destination) === Object.prototype) {
+        // The type is Object, assume a dictionary and read all the keys from the source
+        for (const key in source) {
+            if (source.hasOwnProperty(key)) {
+                propertyNames.add(key);
+            }
+        }
+    }
+    else {
+        // The type is a custom type, get all (assigned) property names from the destination (which does not have the jsonProperty attribute)
+        for (const key in destination) {
+            if (destination.hasOwnProperty(key)) {
+                propertyNames.add(key);
+            }
+        }
+    }
+
+    for (const propertyName of Array.from(propertyNames)) {
+        const propertyMetadata = getPropertyMetadata(destination, propertyName);
         if (propertyMetadata) {
-            destination[key] = getValue(source, destination, key, propertyMetadata);
-        } else if (source[key] !== undefined) {
-            destination[key] = source[key];
+            destination[propertyName] = getValue(source, destination, propertyName, propertyMetadata);
+        } else if (source[propertyName] !== undefined) {
+            destination[propertyName] = source[propertyName];
         }
     }
 

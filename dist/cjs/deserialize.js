@@ -1,19 +1,38 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var base64_arraybuffer_1 = require("base64-arraybuffer");
 var json_property_1 = require("./json-property");
+var base64_arraybuffer_1 = require("base64-arraybuffer");
 function modelBind(type, source) {
     if (source === undefined || source === null) {
         return source;
     }
     var destination = new type();
-    for (var key in destination) {
-        var propertyMetadata = json_property_1.getPropertyMetadata(destination, key);
-        if (propertyMetadata) {
-            destination[key] = getValue(source, destination, key, propertyMetadata);
+    // Get all the property names that has the jsonProperty attribute
+    var propertyNames = new Set(json_property_1.getPropertyNames(destination));
+    if (Object.getPrototypeOf(destination) === Object.prototype) {
+        // The type is Object, assume a dictionary and read all the keys from the source
+        for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+                propertyNames.add(key);
+            }
         }
-        else if (source[key] !== undefined) {
-            destination[key] = source[key];
+    }
+    else {
+        // The type is a custom type, get all (assigned) property names from the destination (which does not have the jsonProperty attribute)
+        for (var key in destination) {
+            if (destination.hasOwnProperty(key)) {
+                propertyNames.add(key);
+            }
+        }
+    }
+    for (var _i = 0, _a = Array.from(propertyNames); _i < _a.length; _i++) {
+        var propertyName = _a[_i];
+        var propertyMetadata = json_property_1.getPropertyMetadata(destination, propertyName);
+        if (propertyMetadata) {
+            destination[propertyName] = getValue(source, destination, propertyName, propertyMetadata);
+        }
+        else if (source[propertyName] !== undefined) {
+            destination[propertyName] = source[propertyName];
         }
     }
     return destination;
