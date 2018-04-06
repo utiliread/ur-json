@@ -1,6 +1,7 @@
 import { JsonMetadata } from './json-metadata';
 
-export const METADATA_KEY = 'jsonProperty';
+const PROPERTY_METADATA_KEY = 'jsonProperty';
+const PROPERTY_NAMES_METADATA_KEY = 'jsonPropertyNames';
 
 /**
  * Attribute specifying a property to be serialized
@@ -21,10 +22,18 @@ export function jsonProperty(nameOrMetadata?: string | JsonMetadata) {
     }
 
     return function (target: any, propertyKey: string) {
-        Reflect.defineMetadata(METADATA_KEY, metadata, target, propertyKey);
+        const propertyNames = Reflect.getOwnMetadata(PROPERTY_NAMES_METADATA_KEY, target) || [];
+        
+        propertyNames.push(propertyKey);
+        Reflect.defineMetadata(PROPERTY_NAMES_METADATA_KEY, propertyNames, target);
+        Reflect.defineMetadata(PROPERTY_METADATA_KEY, metadata, target, propertyKey);
     };
 }
 
-export function getPropertyMetadata(target: any, propertyKey: string): JsonMetadata | undefined {
-    return Reflect.getOwnMetadata(METADATA_KEY, Object.getPrototypeOf(target), propertyKey);
+export function getPropertyMetadata(instance: any, propertyKey: string): JsonMetadata | undefined {
+    return Reflect.getOwnMetadata(PROPERTY_METADATA_KEY, Object.getPrototypeOf(instance), propertyKey);
+}
+
+export function getPropertyNames(instance: any): string[] {
+    return Reflect.getOwnMetadata(PROPERTY_NAMES_METADATA_KEY, Object.getPrototypeOf(instance)) || [];
 }
