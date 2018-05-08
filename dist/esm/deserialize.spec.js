@@ -13,23 +13,75 @@ import { jsonProperty } from './index';
 import { modelBind } from './deserialize';
 var Model = /** @class */ (function () {
     function Model() {
-        this.number = undefined;
-        this.string = undefined;
-        this.arrayBuffer = undefined;
     }
+    __decorate([
+        jsonProperty(),
+        __metadata("design:type", Number)
+    ], Model.prototype, "number", void 0);
+    __decorate([
+        jsonProperty(),
+        __metadata("design:type", String)
+    ], Model.prototype, "string", void 0);
+    __decorate([
+        jsonProperty(),
+        __metadata("design:type", Array)
+    ], Model.prototype, "numberArray", void 0);
+    __decorate([
+        jsonProperty(),
+        __metadata("design:type", Array)
+    ], Model.prototype, "stringArray", void 0);
     __decorate([
         jsonProperty(),
         __metadata("design:type", ArrayBuffer)
     ], Model.prototype, "arrayBuffer", void 0);
     return Model;
 }());
+var Model2 = /** @class */ (function () {
+    function Model2() {
+        this.number = undefined;
+        this.string = undefined;
+        this.numberArray = undefined;
+        this.stringArray = undefined;
+        this.arrayBuffer = undefined;
+    }
+    __decorate([
+        jsonProperty(),
+        __metadata("design:type", ArrayBuffer)
+    ], Model2.prototype, "arrayBuffer", void 0);
+    return Model2;
+}());
 describe('modelBind', function () {
+    it('should correctly deserialize a simple array with primitives array', function () {
+        var result = modelBind(Array, JSON.parse('[1,"b",null]'));
+        if (result) {
+            expect(result).deep.equals([1, "b", null]);
+        }
+        else {
+            expect.fail();
+        }
+    });
     it('should correctly deserialize to model', function () {
         var source = new Model();
-        var result = modelBind(Model, JSON.parse('{"number":1337,"string":"hello","arrayBuffer":"Ezc="}'));
+        var result = modelBind(Model, JSON.parse('{"number":1337,"string":"hello","numberArray":[1,2],"stringArray":["a","b"],"arrayBuffer":"Ezc="}'));
         if (result) {
             expect(result.number).equals(1337);
             expect(result.string).equals('hello');
+            expect(result.numberArray).deep.equals([1, 2]);
+            expect(result.stringArray).deep.equals(["a", "b"]);
+            expect(result.arrayBuffer).deep.equals(new Uint8Array([0x13, 0x37]).buffer);
+        }
+        else {
+            expect.fail();
+        }
+    });
+    it('should correctly deserialize to model2', function () {
+        var source = new Model2();
+        var result = modelBind(Model2, JSON.parse('{"number":1337,"string":"hello","numberArray":[1,2],"stringArray":["a","b"],"arrayBuffer":"Ezc="}'));
+        if (result) {
+            expect(result.number).equals(1337);
+            expect(result.string).equals('hello');
+            expect(result.numberArray).deep.equals([1, 2]);
+            expect(result.stringArray).deep.equals(["a", "b"]);
             expect(result.arrayBuffer).deep.equals(new Uint8Array([0x13, 0x37]).buffer);
         }
         else {

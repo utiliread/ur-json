@@ -4,7 +4,7 @@ import { JsonMetadata } from './json-metadata';
 import { decode } from 'base64-arraybuffer';
 
 export function modelBind<T>(type: { new(): T }, source: any): T | null | undefined {
-    if (source === undefined || source === null) {
+    if (source === undefined || source === null || type.prototype === Array.prototype) {
         return source;
     }
 

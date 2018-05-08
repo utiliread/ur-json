@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var json_property_1 = require("./json-property");
 var base64_arraybuffer_1 = require("base64-arraybuffer");
 function modelBind(type, source) {
-    if (source === undefined || source === null) {
+    if (source === undefined || source === null || type.prototype === Array.prototype) {
         return source;
     }
     var destination = new type();

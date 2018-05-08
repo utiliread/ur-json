@@ -1,7 +1,7 @@
 import { getPropertyMetadata, getPropertyNames } from './json-property';
 import { decode } from 'base64-arraybuffer';
 export function modelBind(type, source) {
-    if (source === undefined || source === null) {
+    if (source === undefined || source === null || type.prototype === Array.prototype) {
         return source;
     }
     var destination = new type();
