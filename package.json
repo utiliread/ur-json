@@ -11,7 +11,7 @@
         "clean": "rimraf dist"
     },
     "devDependencies": {
-        "reflect-metadata": "0.1.12",
+        "reflect-metadata": "0.1.10",
         "rimraf": "^2.6.3",
         "typescript": "^3.2.4",
         "ur-test": "^0.3.0"
