@@ -11,10 +11,10 @@
         "clean": "rimraf dist"
     },
     "devDependencies": {
-        "reflect-metadata": "^0.1.12",
-        "rimraf": "^2.6.2",
-        "typescript": "^2.7.2",
-        "ur-test": "^0.0.1"
+        "reflect-metadata": "0.1.12",
+        "rimraf": "^2.6.3",
+        "typescript": "^3.2.4",
+        "ur-test": "^0.3.0"
     },
     "dependencies": {
         "base64-arraybuffer": "^0.1.5"
