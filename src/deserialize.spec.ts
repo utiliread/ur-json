@@ -39,7 +39,6 @@ describe('modelBind', () => {
     });
 
     it('should correctly deserialize to model', () => {
-        const source = new Model();
         const result = modelBind(Model, JSON.parse('{"number":1337,"string":"hello","numberArray":[1,2],"stringArray":["a","b"],"arrayBuffer":"Ezc="}'));
 
         if (result) {
@@ -55,7 +54,6 @@ describe('modelBind', () => {
     });
 
     it('should correctly deserialize to model2', () => {
-        const source = new Model2();
         const result = modelBind(Model2, JSON.parse('{"number":1337,"string":"hello","numberArray":[1,2],"stringArray":["a","b"],"arrayBuffer":"Ezc="}'));
 
         if (result) {

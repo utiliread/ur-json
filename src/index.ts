@@ -11,5 +11,5 @@ export {
     JsonConverter,
     jsonProperty,
     dateTimeConverter,
-    rawConverter
+    rawConverter,
 };

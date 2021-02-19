@@ -43,7 +43,7 @@ export function modelBind<T>(type: { new(): T }, source: any): T | null | undefi
 }
 
 function getValue<T>(source: any, destination: T, key: string, propertyMetadata: JsonMetadata) {
-    let propertyName = propertyMetadata.name || key;
+    let propertyName = propertyMetadata.name ?? key;
     let propertyType = getPropertyType(destination, key);
     const fromJson = propertyMetadata.converter ? propertyMetadata.converter.fromJson : undefined;
 
