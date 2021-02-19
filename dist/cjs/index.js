@@ -1,13 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.rawConverter = exports.dateTimeConverter = exports.jsonProperty = exports.modelBind = exports.serialize = void 0;
 var date_time_converter_1 = require("./converters/date-time-converter");
-exports.dateTimeConverter = date_time_converter_1.dateTimeConverter;
+Object.defineProperty(exports, "dateTimeConverter", { enumerable: true, get: function () { return date_time_converter_1.dateTimeConverter; } });
 var json_property_1 = require("./json-property");
-exports.jsonProperty = json_property_1.jsonProperty;
+Object.defineProperty(exports, "jsonProperty", { enumerable: true, get: function () { return json_property_1.jsonProperty; } });
 var deserialize_1 = require("./deserialize");
-exports.modelBind = deserialize_1.modelBind;
+Object.defineProperty(exports, "modelBind", { enumerable: true, get: function () { return deserialize_1.modelBind; } });
 var raw_converter_1 = require("./converters/raw-converter");
-exports.rawConverter = raw_converter_1.rawConverter;
+Object.defineProperty(exports, "rawConverter", { enumerable: true, get: function () { return raw_converter_1.rawConverter; } });
 var serialize_1 = require("./serialize");
-exports.serialize = serialize_1.serialize;
+Object.defineProperty(exports, "serialize", { enumerable: true, get: function () { return serialize_1.serialize; } });
 //# sourceMappingURL=index.js.map

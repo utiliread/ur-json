@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getPropertyNames = exports.getPropertyMetadata = exports.jsonProperty = void 0;
 var PROPERTY_METADATA_KEY = 'jsonProperty';
 var PROPERTY_NAMES_METADATA_KEY = 'jsonPropertyNames';
 /**

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.modelBind = void 0;
 var json_property_1 = require("./json-property");
 var base64_arraybuffer_1 = require("base64-arraybuffer");
 function modelBind(type, source) {

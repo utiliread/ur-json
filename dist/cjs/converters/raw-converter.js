@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.rawConverter = void 0;
 var RawConverter = /** @class */ (function () {
     function RawConverter() {
     }
