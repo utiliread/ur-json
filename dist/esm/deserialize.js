@@ -36,17 +36,18 @@ export function modelBind(type, source) {
     return destination;
 }
 function getValue(source, destination, key, propertyMetadata) {
-    var propertyName = propertyMetadata.name || key;
+    var _a, _b;
+    var propertyName = (_a = propertyMetadata.name) !== null && _a !== void 0 ? _a : key;
     var propertyType = getPropertyType(destination, key);
-    var fromJson = propertyMetadata.converter ? propertyMetadata.converter.fromJson : undefined;
+    var fromJsonConverter = ((_b = propertyMetadata.converter) === null || _b === void 0 ? void 0 : _b.fromJson) ? propertyMetadata.converter : undefined;
     if (isArray(propertyType)) {
         var type_1 = propertyMetadata.type;
-        if (fromJson) {
+        if (fromJsonConverter) {
             if (isArray(source[propertyName])) {
-                return source[propertyName].map(function (item) { return fromJson(item); });
+                return source[propertyName].map(function (item) { return runConverter(fromJsonConverter, item); });
             }
             else {
-                return fromJson(source[propertyName]);
+                return runConverter(fromJsonConverter, source[propertyName]);
             }
         }
         else if (type_1) {
@@ -58,8 +59,8 @@ function getValue(source, destination, key, propertyMetadata) {
             }
         }
     }
-    if (fromJson) {
-        return fromJson(source[propertyName]);
+    if (fromJsonConverter) {
+        return runConverter(fromJsonConverter, source[propertyName]);
     }
     else if (propertyType === ArrayBuffer) {
         return decode(source[propertyName]);
@@ -72,6 +73,12 @@ function getValue(source, destination, key, propertyMetadata) {
     }
 }
 ;
+function runConverter(converter, source) {
+    if (source === null || source === undefined) {
+        return source;
+    }
+    return converter.fromJson(source);
+}
 function getPropertyType(target, propertyKey) {
     return Reflect.getOwnMetadata("design:type", Object.getPrototypeOf(target), propertyKey);
 }

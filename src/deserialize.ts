@@ -2,6 +2,7 @@ import { getPropertyMetadata, getPropertyNames } from './json-property';
 
 import { JsonMetadata } from './json-metadata';
 import { decode } from 'base64-arraybuffer';
+import { JsonConverter } from './json-converter';
 
 export function modelBind<T>(type: { new(): T }, source: any): T | null | undefined {
     if (source === undefined || source === null || type.prototype === Array.prototype) {
@@ -45,17 +46,17 @@ export function modelBind<T>(type: { new(): T }, source: any): T | null | undefi
 function getValue<T>(source: any, destination: T, key: string, propertyMetadata: JsonMetadata) {
     let propertyName = propertyMetadata.name ?? key;
     let propertyType = getPropertyType(destination, key);
-    const fromJson = propertyMetadata.converter ? propertyMetadata.converter.fromJson : undefined;
+    const fromJsonConverter = propertyMetadata.converter?.fromJson ? propertyMetadata.converter : undefined;
 
     if (isArray(propertyType)) {
         const type = propertyMetadata.type;
 
-        if (fromJson) {
+        if (fromJsonConverter) {
             if (isArray(source[propertyName])) {
-                return source[propertyName].map((item: any) => fromJson(item));
+                return source[propertyName].map((item: any) => runConverter(fromJsonConverter, item));
             }
             else {
-                return fromJson(source[propertyName]);
+                return runConverter(fromJsonConverter, source[propertyName]);
             }
         }
         else if (type) {
@@ -68,8 +69,8 @@ function getValue<T>(source: any, destination: T, key: string, propertyMetadata:
         }
     }
 
-    if (fromJson) {
-        return fromJson(source[propertyName]);
+    if (fromJsonConverter) {
+        return runConverter(fromJsonConverter, source[propertyName]);
     }
     else if (propertyType === ArrayBuffer) {
         return decode(source[propertyName]);
@@ -81,6 +82,13 @@ function getValue<T>(source: any, destination: T, key: string, propertyMetadata:
         return source[propertyName];
     }
 };
+
+function runConverter(converter: JsonConverter, source: any) {
+    if (source === null || source === undefined) {
+        return source;
+    }
+    return converter.fromJson!(source);
+}
 
 function getPropertyType(target: any, propertyKey: string) {
     return Reflect.getOwnMetadata("design:type", Object.getPrototypeOf(target), propertyKey);

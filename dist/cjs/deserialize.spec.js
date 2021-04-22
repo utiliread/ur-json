@@ -63,7 +63,6 @@ describe('modelBind', function () {
         }
     });
     it('should correctly deserialize to model', function () {
-        var source = new Model();
         var result = deserialize_1.modelBind(Model, JSON.parse('{"number":1337,"string":"hello","numberArray":[1,2],"stringArray":["a","b"],"arrayBuffer":"Ezc="}'));
         if (result) {
             chai_1.expect(result.number).equals(1337);
@@ -77,7 +76,6 @@ describe('modelBind', function () {
         }
     });
     it('should correctly deserialize to model2', function () {
-        var source = new Model2();
         var result = deserialize_1.modelBind(Model2, JSON.parse('{"number":1337,"string":"hello","numberArray":[1,2],"stringArray":["a","b"],"arrayBuffer":"Ezc="}'));
         if (result) {
             chai_1.expect(result.number).equals(1337);

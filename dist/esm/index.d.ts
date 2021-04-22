@@ -4,4 +4,4 @@ import { jsonProperty } from './json-property';
 import { modelBind } from './deserialize';
 import { rawConverter } from './converters/raw-converter';
 import { serialize } from './serialize';
-export { serialize, modelBind, JsonConverter, jsonProperty, dateTimeConverter, rawConverter };
+export { serialize, modelBind, JsonConverter, jsonProperty, dateTimeConverter, rawConverter, };
