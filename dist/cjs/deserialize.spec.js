@@ -17,23 +17,23 @@ var Model = /** @class */ (function () {
     function Model() {
     }
     __decorate([
-        index_1.jsonProperty(),
+        (0, index_1.jsonProperty)(),
         __metadata("design:type", Number)
     ], Model.prototype, "number", void 0);
     __decorate([
-        index_1.jsonProperty(),
+        (0, index_1.jsonProperty)(),
         __metadata("design:type", String)
     ], Model.prototype, "string", void 0);
     __decorate([
-        index_1.jsonProperty(),
+        (0, index_1.jsonProperty)(),
         __metadata("design:type", Array)
     ], Model.prototype, "numberArray", void 0);
     __decorate([
-        index_1.jsonProperty(),
+        (0, index_1.jsonProperty)(),
         __metadata("design:type", Array)
     ], Model.prototype, "stringArray", void 0);
     __decorate([
-        index_1.jsonProperty(),
+        (0, index_1.jsonProperty)(),
         __metadata("design:type", ArrayBuffer)
     ], Model.prototype, "arrayBuffer", void 0);
     return Model;
@@ -47,42 +47,42 @@ var Model2 = /** @class */ (function () {
         this.arrayBuffer = undefined;
     }
     __decorate([
-        index_1.jsonProperty(),
+        (0, index_1.jsonProperty)(),
         __metadata("design:type", ArrayBuffer)
     ], Model2.prototype, "arrayBuffer", void 0);
     return Model2;
 }());
 describe('modelBind', function () {
     it('should correctly deserialize a simple array with primitives array', function () {
-        var result = deserialize_1.modelBind(Array, JSON.parse('[1,"b",null]'));
+        var result = (0, deserialize_1.modelBind)(Array, JSON.parse('[1,"b",null]'));
         if (result) {
-            chai_1.expect(result).deep.equals([1, "b", null]);
+            (0, chai_1.expect)(result).deep.equals([1, "b", null]);
         }
         else {
             chai_1.expect.fail();
         }
     });
     it('should correctly deserialize to model', function () {
-        var result = deserialize_1.modelBind(Model, JSON.parse('{"number":1337,"string":"hello","numberArray":[1,2],"stringArray":["a","b"],"arrayBuffer":"Ezc="}'));
+        var result = (0, deserialize_1.modelBind)(Model, JSON.parse('{"number":1337,"string":"hello","numberArray":[1,2],"stringArray":["a","b"],"arrayBuffer":"Ezc="}'));
         if (result) {
-            chai_1.expect(result.number).equals(1337);
-            chai_1.expect(result.string).equals('hello');
-            chai_1.expect(result.numberArray).deep.equals([1, 2]);
-            chai_1.expect(result.stringArray).deep.equals(["a", "b"]);
-            chai_1.expect(result.arrayBuffer).deep.equals(new Uint8Array([0x13, 0x37]).buffer);
+            (0, chai_1.expect)(result.number).equals(1337);
+            (0, chai_1.expect)(result.string).equals('hello');
+            (0, chai_1.expect)(result.numberArray).deep.equals([1, 2]);
+            (0, chai_1.expect)(result.stringArray).deep.equals(["a", "b"]);
+            (0, chai_1.expect)(result.arrayBuffer).deep.equals(new Uint8Array([0x13, 0x37]).buffer);
         }
         else {
             chai_1.expect.fail();
         }
     });
     it('should correctly deserialize to model2', function () {
-        var result = deserialize_1.modelBind(Model2, JSON.parse('{"number":1337,"string":"hello","numberArray":[1,2],"stringArray":["a","b"],"arrayBuffer":"Ezc="}'));
+        var result = (0, deserialize_1.modelBind)(Model2, JSON.parse('{"number":1337,"string":"hello","numberArray":[1,2],"stringArray":["a","b"],"arrayBuffer":"Ezc="}'));
         if (result) {
-            chai_1.expect(result.number).equals(1337);
-            chai_1.expect(result.string).equals('hello');
-            chai_1.expect(result.numberArray).deep.equals([1, 2]);
-            chai_1.expect(result.stringArray).deep.equals(["a", "b"]);
-            chai_1.expect(result.arrayBuffer).deep.equals(new Uint8Array([0x13, 0x37]).buffer);
+            (0, chai_1.expect)(result.number).equals(1337);
+            (0, chai_1.expect)(result.string).equals('hello');
+            (0, chai_1.expect)(result.numberArray).deep.equals([1, 2]);
+            (0, chai_1.expect)(result.stringArray).deep.equals(["a", "b"]);
+            (0, chai_1.expect)(result.arrayBuffer).deep.equals(new Uint8Array([0x13, 0x37]).buffer);
         }
         else {
             chai_1.expect.fail();

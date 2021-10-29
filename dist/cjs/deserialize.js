@@ -9,7 +9,7 @@ function modelBind(type, source) {
     }
     var destination = new type();
     // Get all the property names that has the jsonProperty attribute
-    var propertyNames = new Set(json_property_1.getPropertyNames(destination));
+    var propertyNames = new Set((0, json_property_1.getPropertyNames)(destination));
     if (Object.getPrototypeOf(destination) === Object.prototype) {
         // The type is Object, assume a dictionary and read all the keys from the source
         for (var key in source) {
@@ -28,7 +28,7 @@ function modelBind(type, source) {
     }
     for (var _i = 0, _a = Array.from(propertyNames); _i < _a.length; _i++) {
         var propertyName = _a[_i];
-        var propertyMetadata = json_property_1.getPropertyMetadata(destination, propertyName);
+        var propertyMetadata = (0, json_property_1.getPropertyMetadata)(destination, propertyName);
         if (propertyMetadata) {
             destination[propertyName] = getValue(source, destination, propertyName, propertyMetadata);
         }
@@ -67,7 +67,7 @@ function getValue(source, destination, key, propertyMetadata) {
         return runConverter(fromJsonConverter, source[propertyName]);
     }
     else if (propertyType === ArrayBuffer) {
-        return base64_arraybuffer_1.decode(source[propertyName]);
+        return (0, base64_arraybuffer_1.decode)(source[propertyName]);
     }
     else if (!isPrimitive(propertyType)) {
         return modelBind(propertyType, source[propertyName]);

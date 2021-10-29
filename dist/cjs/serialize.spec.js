@@ -14,8 +14,8 @@ var Model = /** @class */ (function () {
 describe('serialize', function () {
     it('should correctly serialize model', function () {
         var source = new Model();
-        var result = serialize_1.serialize(source);
-        chai_1.expect(result).to.equal('{"number":1337,"string":"hello","arrayBuffer":"Ezc="}');
+        var result = (0, serialize_1.serialize)(source);
+        (0, chai_1.expect)(result).to.equal('{"number":1337,"string":"hello","arrayBuffer":"Ezc="}');
     });
 });
 //# sourceMappingURL=serialize.spec.js.map

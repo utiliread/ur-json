@@ -5,7 +5,7 @@ var base64_arraybuffer_1 = require("base64-arraybuffer");
 function serialize(source) {
     return JSON.stringify(source, function (key, value) {
         if (value instanceof ArrayBuffer) {
-            return base64_arraybuffer_1.encode(value);
+            return (0, base64_arraybuffer_1.encode)(value);
         }
         return value;
     });

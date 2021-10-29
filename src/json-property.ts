@@ -31,9 +31,23 @@ export function jsonProperty(nameOrMetadata?: string | JsonMetadata) {
 }
 
 export function getPropertyMetadata(instance: any, propertyKey: string): JsonMetadata | undefined {
-    return Reflect.getOwnMetadata(PROPERTY_METADATA_KEY, Object.getPrototypeOf(instance), propertyKey);
+    let target = Object.getPrototypeOf(instance);
+    while (target !== Object.prototype) {
+        const metadata = Reflect.getOwnMetadata(PROPERTY_METADATA_KEY, target, propertyKey);
+        if (metadata) {
+            return metadata;
+        }
+        target = Object.getPrototypeOf(target);
+    }
 }
 
 export function getPropertyNames(instance: any): string[] {
-    return Reflect.getOwnMetadata(PROPERTY_NAMES_METADATA_KEY, Object.getPrototypeOf(instance)) || [];
+    const names: string[] = [];
+    let target = Object.getPrototypeOf(instance);
+    while (target !== Object.prototype) {
+        const propertyNames = Reflect.getOwnMetadata(PROPERTY_NAMES_METADATA_KEY, target);
+        names.push(...propertyNames);
+        target = Object.getPrototypeOf(target); // Set target to base class
+    }
+    return names;
 }

@@ -3,6 +3,7 @@ import 'reflect-metadata';
 import { expect } from 'chai';
 import { jsonProperty } from './index';
 import { modelBind } from './deserialize';
+import { JsonConverter } from './json-converter';
 
 class Model {
     @jsonProperty()
@@ -24,6 +25,30 @@ class Model2 {
     stringArray?: string[] = undefined;
     @jsonProperty()
     arrayBuffer?: ArrayBuffer = undefined;
+}
+
+class PlusOneConverter implements JsonConverter {
+    public static readonly instance = new PlusOneConverter();
+    fromJson(value: any) {
+        return value + 1;
+    }
+}
+
+class AppendTestConverter implements JsonConverter {
+    public static readonly instance = new AppendTestConverter();
+    fromJson(value: any) {
+        return value + "test";
+    }
+}
+
+class PolyBase {
+    @jsonProperty({converter: PlusOneConverter.instance})
+    id!: number;
+}
+
+class PolySub extends PolyBase {
+    @jsonProperty({converter: AppendTestConverter.instance})
+    sub!: string;
 }
 
 describe('modelBind', () => {
@@ -66,5 +91,11 @@ describe('modelBind', () => {
         else {
             expect.fail();
         }
+    });
+
+    it("should support polymorphic models", () => {
+        const result = modelBind(PolySub, JSON.parse('{"id":1,"sub":"hello"}'));
+        expect(result?.id).equals(2);
+        expect(result?.sub).equals("hellotest");
     });
 });
