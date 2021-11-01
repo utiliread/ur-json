@@ -79,8 +79,15 @@ function runConverter(converter, source) {
     }
     return converter.fromJson(source);
 }
-function getPropertyType(target, propertyKey) {
-    return Reflect.getOwnMetadata("design:type", Object.getPrototypeOf(target), propertyKey);
+function getPropertyType(destination, propertyKey) {
+    var target = Object.getPrototypeOf(destination);
+    while (target !== Object.prototype) {
+        var propertyType = Reflect.getOwnMetadata("design:type", target, propertyKey);
+        if (propertyType) {
+            return propertyType;
+        }
+        target = Object.getPrototypeOf(target);
+    }
 }
 function isArray(object) {
     if (object === Array) {

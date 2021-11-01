@@ -90,8 +90,15 @@ function runConverter(converter: JsonConverter, source: any) {
     return converter.fromJson!(source);
 }
 
-function getPropertyType(target: any, propertyKey: string) {
-    return Reflect.getOwnMetadata("design:type", Object.getPrototypeOf(target), propertyKey);
+function getPropertyType(destination: any, propertyKey: string) {
+    let target = Object.getPrototypeOf(destination);
+    while (target !== Object.prototype) {
+        const propertyType = Reflect.getOwnMetadata("design:type", target, propertyKey);
+        if (propertyType) {
+            return propertyType;
+        }
+        target = Object.getPrototypeOf(target);
+    }
 }
 
 function isArray(object: any) {
