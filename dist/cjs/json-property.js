@@ -27,11 +27,25 @@ function jsonProperty(nameOrMetadata) {
 }
 exports.jsonProperty = jsonProperty;
 function getPropertyMetadata(instance, propertyKey) {
-    return Reflect.getOwnMetadata(PROPERTY_METADATA_KEY, Object.getPrototypeOf(instance), propertyKey);
+    var target = Object.getPrototypeOf(instance);
+    while (target !== Object.prototype) {
+        var metadata = Reflect.getOwnMetadata(PROPERTY_METADATA_KEY, target, propertyKey);
+        if (metadata) {
+            return metadata;
+        }
+        target = Object.getPrototypeOf(target);
+    }
 }
 exports.getPropertyMetadata = getPropertyMetadata;
 function getPropertyNames(instance) {
-    return Reflect.getOwnMetadata(PROPERTY_NAMES_METADATA_KEY, Object.getPrototypeOf(instance)) || [];
+    var names = [];
+    var target = Object.getPrototypeOf(instance);
+    while (target !== Object.prototype) {
+        var propertyNames = Reflect.getOwnMetadata(PROPERTY_NAMES_METADATA_KEY, target);
+        names.push.apply(names, propertyNames);
+        target = Object.getPrototypeOf(target); // Set target to base class
+    }
+    return names;
 }
 exports.getPropertyNames = getPropertyNames;
 //# sourceMappingURL=json-property.js.map
