@@ -1,4 +1,4 @@
-import { JsonConverter } from "./json-converter";
+import { JsonConverter, JsonConverterOfT } from "./json-converter";
 import { dateTimeConverter } from "./converters/date-time-converter";
 import { jsonProperty } from "./json-property";
 import { deserialize } from "./deserialize";
@@ -9,6 +9,7 @@ export {
   serialize,
   deserialize,
   JsonConverter,
+  JsonConverterOfT,
   jsonProperty,
   dateTimeConverter,
   rawConverter,
