@@ -1,4 +1,4 @@
 export interface JsonConverter {
-    toJson?(source: any): any;
-    fromJson?(source: any): any;
+  toJson?(source: any): any;
+  fromJson?(source: any): any;
 }
