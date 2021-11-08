@@ -1,8 +1,9 @@
 import "reflect-metadata";
 
-import { expect } from "chai";
-import { jsonProperty } from "./index";
-import { deserialize } from "./deserialize";
+import { expect } from 'chai';
+import { jsonProperty } from './index';
+import { deserialize } from './deserialize';
+import { JsonConverter } from './json-converter';
 
 class Model {
   @jsonProperty()
@@ -26,9 +27,33 @@ class Model2 {
   arrayBuffer?: ArrayBuffer = undefined;
 }
 
-describe("modelBind", () => {
-  it("should correctly deserialize a simple array with primitives array", () => {
-    const result = deserialize(Array, JSON.parse('[1,"b",null]'));
+class PlusOneConverter implements JsonConverter {
+    public static readonly instance = new PlusOneConverter();
+    fromJson(value: any) {
+        return value + 1;
+    }
+}
+
+class AppendTestConverter implements JsonConverter {
+    public static readonly instance = new AppendTestConverter();
+    fromJson(value: any) {
+        return value + "test";
+    }
+}
+
+class PolyBase {
+    @jsonProperty({converter: PlusOneConverter.instance})
+    id!: number;
+}
+
+class PolySub extends PolyBase {
+    @jsonProperty({converter: AppendTestConverter.instance})
+    sub!: string;
+}
+
+describe('deserialize', () => {
+    it('should correctly deserialize a simple array with primitives array', () => {
+        const result = deserialize(Array, JSON.parse('[1,"b",null]'));
 
     if (result) {
       expect(result).deep.equals([1, "b", null]);
@@ -66,16 +91,21 @@ describe("modelBind", () => {
       )
     );
 
-    if (result) {
-      expect(result.number).equals(1337);
-      expect(result.string).equals("hello");
-      expect(result.numberArray).deep.equals([1, 2]);
-      expect(result.stringArray).deep.equals(["a", "b"]);
-      expect(result.arrayBuffer).deep.equals(
-        new Uint8Array([0x13, 0x37]).buffer
-      );
-    } else {
-      expect.fail();
-    }
-  });
+        if (result) {
+            expect(result.number).equals(1337);
+            expect(result.string).equals('hello');
+            expect(result.numberArray).deep.equals([1,2]);
+            expect(result.stringArray).deep.equals(["a", "b"]);
+            expect(result.arrayBuffer).deep.equals(new Uint8Array([0x13, 0x37]).buffer);
+        }
+        else {
+            expect.fail();
+        }
+    });
+
+    it("should support polymorphic models", () => {
+        const result = deserialize(PolySub, JSON.parse('{"id":1,"sub":"hello"}'));
+        expect(result?.id).equals(2);
+        expect(result?.sub).equals("hellotest");
+    });
 });
