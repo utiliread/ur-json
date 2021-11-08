@@ -5,8 +5,8 @@ import { decode } from "base64-arraybuffer";
 import { JsonConverter } from "./json-converter";
 
 export function deserialize<T>(
-  type: { new (): T },
-  source: any
+  source: any,
+  type: { new (): T }
 ): T | null | undefined {
   if (
     source === undefined ||
@@ -79,7 +79,7 @@ function getValue<T>(
       }
     } else if (type) {
       if (isArray(source[propertyName])) {
-        return source[propertyName].map((item: any) => deserialize(type, item));
+        return source[propertyName].map((item: any) => deserialize(item, type));
       } else {
         return undefined;
       }
@@ -91,7 +91,7 @@ function getValue<T>(
   } else if (propertyType === ArrayBuffer) {
     return decode(source[propertyName]);
   } else if (!isPrimitive(propertyType)) {
-    return deserialize(propertyType, source[propertyName]);
+    return deserialize(source[propertyName], propertyType);
   } else {
     return source[propertyName];
   }
