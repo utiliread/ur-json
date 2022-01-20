@@ -44,8 +44,8 @@ export function modelBind<T>(type: { new(): T }, source: any): T | null | undefi
 }
 
 function getValue<T>(source: any, destination: T, key: string, propertyMetadata: JsonMetadata) {
-    let propertyName = propertyMetadata.name ?? key;
-    let propertyType = getPropertyType(destination, key);
+    const propertyName = propertyMetadata.name ?? key;
+    const propertyType = getPropertyType(destination, key);
     const fromJsonConverter = propertyMetadata.converter?.fromJson ? propertyMetadata.converter : undefined;
 
     if (isArray(propertyType)) {
@@ -73,7 +73,13 @@ function getValue<T>(source: any, destination: T, key: string, propertyMetadata:
         return runConverter(fromJsonConverter, source[propertyName]);
     }
     else if (propertyType === ArrayBuffer) {
-        return decode(source[propertyName]);
+        const value = source[propertyName];
+        if (typeof value === "string") {
+            return decode(value);
+        }
+        else {
+            return value; // null or undefined;
+        }
     }
     else if (!isPrimitive(propertyType)) {
         return modelBind(propertyType, source[propertyName]);
