@@ -20,11 +20,7 @@ export function jsonProperty(nameOrMetadata?: string | JsonMetadata) {
     throw "Only one of type or converter can be specified";
   }
 
-  return function (
-    target: Object,
-    propertyKey: string | symbol,
-    parameterIndex?: number
-  ) {
+  return function (target: Object, propertyKey: string) {
     const propertyNames =
       Reflect.getOwnMetadata(PROPERTY_NAMES_METADATA_KEY, target) || [];
 

@@ -5,14 +5,27 @@ import { decode } from "base64-arraybuffer";
 import { JsonConverter } from "./json-converter";
 
 export function deserialize<T>(
+  json: string,
+  type: { new (): T }
+): T | null | undefined;
+export function deserialize<T>(
+  source: any,
+  type: { new (): T }
+): T | null | undefined;
+export function deserialize<T>(
   source: any,
   type: { new (): T }
 ): T | null | undefined {
-  if (
-    source === undefined ||
-    source === null ||
-    type.prototype === Array.prototype
-  ) {
+  if (source === undefined) {
+    return source;
+  }
+
+  if (typeof source === "string") {
+    // Assume that the source is json
+    source = JSON.parse(source);
+  }
+
+  if (source === null || type.prototype === Array.prototype || type.prototype === String.prototype) {
     return source;
   }
 

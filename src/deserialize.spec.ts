@@ -52,9 +52,37 @@ class PolySub extends PolyBase {
 }
 
 describe("deserialize", () => {
-  it("should correctly deserialize a simple array with primitives array", () => {
-    const source = JSON.parse('[1,"b",null]');
+  it("should return string if the input is string", () => {
+    const result = deserialize('"whoot"', String);
+    
+    expect(result).to.equal("whoot");
+  });
+
+  it("should correctly deserialize from json input", () => {
+    const json = '[1,"a"]';
+    const result = deserialize(json, Array);
+
+    if (result) {
+      expect(result).deep.equals([1, "a"]);
+    } else {
+      expect.fail();
+    }
+  });
+
+  it("should correctly deserialize from object input", () => {
+    const source = [1,"a"];
     const result = deserialize(source, Array);
+
+    if (result) {
+      expect(result).deep.equals([1, "a"]);
+    } else {
+      expect.fail();
+    }
+  });
+
+  it("should correctly deserialize a simple array with primitives array", () => {
+    const json = '[1,"b",null]';
+    const result = deserialize(json, Array);
 
     if (result) {
       expect(result).deep.equals([1, "b", null]);
