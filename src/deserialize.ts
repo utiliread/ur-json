@@ -4,7 +4,10 @@ import { JsonMetadata } from "./json-metadata";
 import { decode } from "base64-arraybuffer";
 import { JsonConverter } from "./json-converter";
 
-export function deserializeString<T>(json: string, type: { new(): T}): T | null | undefined {
+export function deserializeString<T>(
+  json: string,
+  type: { new (): T }
+): T | null | undefined {
   return deserialize(JSON.parse(json), type);
 }
 
@@ -16,7 +19,11 @@ export function deserialize<T>(
     return source;
   }
 
-  if (source === null || type.prototype === Array.prototype || type.prototype === String.prototype) {
+  if (
+    source === null ||
+    type.prototype === Array.prototype ||
+    type.prototype === String.prototype
+  ) {
     return source;
   }
 
