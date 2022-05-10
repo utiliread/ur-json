@@ -4,7 +4,9 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "strict": true,
+    "rootDirs": ["src"],
     "lib": ["ES2018"],
     "types": ["mocha", "reflect-metadata"]
-  }
+  },
+  "exclude": ["dist"]
 }

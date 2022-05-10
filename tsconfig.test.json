@@ -3,7 +3,5 @@
   "compilerOptions": {
     "module": "commonjs",
     "outDir": "dist/test"
-  },
-  "exclude": ["./dist/*.d.ts", "./dist/*", "./*.d.ts"],
-  "include": ["./src"]
+  }
 }
