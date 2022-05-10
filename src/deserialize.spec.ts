@@ -82,7 +82,7 @@ describe("deserialize", () => {
 
   it("should correctly deserialize a simple array with primitives array", () => {
     const json = '[1,"b",null]';
-    const result = deserialize(json, Array);
+    const result = deserializeString(json, Array);
 
     if (result) {
       expect(result).deep.equals([1, "b", null]);
