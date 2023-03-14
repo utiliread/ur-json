@@ -1,8 +1,8 @@
 import { getPropertyMetadata, getPropertyNames } from "./json-property";
 
+import { JsonConverter } from "./json-converter";
 import { JsonMetadata } from "./json-metadata";
 import { decode } from "base64-arraybuffer";
-import { JsonConverter } from "./json-converter";
 
 export function deserializeString<T>(
   json: string,
@@ -114,7 +114,10 @@ function getValue<T>(
 }
 
 function runConverter(converter: JsonConverter, source: any) {
-  if (source === null || source === undefined) {
+  if (
+    (source === null && !converter.handleNull) ||
+    (source === undefined && !converter.handleUndefined)
+  ) {
     return source;
   }
   return converter.fromJson!(source);

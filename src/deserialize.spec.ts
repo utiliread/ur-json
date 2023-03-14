@@ -1,9 +1,10 @@
 import "reflect-metadata";
 
+import { deserialize, deserializeString } from "./deserialize";
+
+import { JsonConverter } from "./json-converter";
 import { expect } from "chai";
 import { jsonProperty } from "./index";
-import { deserialize, deserializeString } from "./deserialize";
-import { JsonConverter } from "./json-converter";
 
 class Model {
   @jsonProperty()
@@ -49,6 +50,23 @@ class PolyBase {
 class PolySub extends PolyBase {
   @jsonProperty({ converter: AppendTestConverter.instance })
   sub!: string;
+}
+
+class HandleNullConverter implements JsonConverter {
+  public static readonly instance = new HandleNullConverter();
+  get handleNull() {
+    return true;
+  }
+  fromJson(value: any) {
+    return value === null ? "is null" : "is not null";
+  }
+}
+
+class NullModel {
+  @jsonProperty()
+  skipNullValue!: string | null;
+  @jsonProperty({converter: HandleNullConverter.instance})
+  handleNullValue!: string;
 }
 
 describe("deserialize", () => {
@@ -135,4 +153,11 @@ describe("deserialize", () => {
     expect(result?.id).equals(2);
     expect(result?.sub).equals("hellotest");
   });
+
+  it("should pass null to converter if handleNull is true", () => {
+    const source = JSON.parse('{"skipNullValue":null, "handleNullValue":null}');
+    const result = deserialize(source, NullModel);
+    expect(result?.skipNullValue).equals(null);
+    expect(result?.handleNullValue).equals("is null");
+  })
 });
