@@ -61,7 +61,9 @@ export function getPropertyNames(instance: any): string[] {
       PROPERTY_NAMES_METADATA_KEY,
       target
     );
-    names.push(...propertyNames);
+    if (propertyNames) {
+      names.push(...propertyNames);
+    }
     target = Object.getPrototypeOf(target); // Set target to base class
   }
   return names;
