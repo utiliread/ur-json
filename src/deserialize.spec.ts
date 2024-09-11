@@ -65,14 +65,14 @@ class HandleNullConverter implements JsonConverter {
 class NullModel {
   @jsonProperty()
   skipNullValue!: string | null;
-  @jsonProperty({converter: HandleNullConverter.instance})
+  @jsonProperty({ converter: HandleNullConverter.instance })
   handleNullValue!: string;
 }
 
 describe("deserialize", () => {
   it("should return string if the input is string", () => {
     const result = deserializeString('"whoot"', String);
-    
+
     expect(result).to.equal("whoot");
   });
 
@@ -88,7 +88,7 @@ describe("deserialize", () => {
   });
 
   it("should correctly deserialize from object input", () => {
-    const source = [1,"a"];
+    const source = [1, "a"];
     const result = deserialize(source, Array);
 
     if (result) {
@@ -111,7 +111,7 @@ describe("deserialize", () => {
 
   it("should correctly deserialize to model", () => {
     const source = JSON.parse(
-      '{"number":1337,"string":"hello","numberArray":[1,2],"stringArray":["a","b"],"arrayBuffer":"Ezc="}'
+      '{"number":1337,"string":"hello","numberArray":[1,2],"stringArray":["a","b"],"arrayBuffer":"Ezc="}',
     );
     const result = deserialize(source, Model);
 
@@ -121,7 +121,7 @@ describe("deserialize", () => {
       expect(result.numberArray).deep.equals([1, 2]);
       expect(result.stringArray).deep.equals(["a", "b"]);
       expect(result.arrayBuffer).deep.equals(
-        new Uint8Array([0x13, 0x37]).buffer
+        new Uint8Array([0x13, 0x37]).buffer,
       );
     } else {
       expect.fail();
@@ -130,7 +130,7 @@ describe("deserialize", () => {
 
   it("should correctly deserialize to model2", () => {
     const source = JSON.parse(
-      '{"number":1337,"string":"hello","numberArray":[1,2],"stringArray":["a","b"],"arrayBuffer":"Ezc="}'
+      '{"number":1337,"string":"hello","numberArray":[1,2],"stringArray":["a","b"],"arrayBuffer":"Ezc="}',
     );
     const result = deserialize(source, Model2);
 
@@ -140,7 +140,7 @@ describe("deserialize", () => {
       expect(result.numberArray).deep.equals([1, 2]);
       expect(result.stringArray).deep.equals(["a", "b"]);
       expect(result.arrayBuffer).deep.equals(
-        new Uint8Array([0x13, 0x37]).buffer
+        new Uint8Array([0x13, 0x37]).buffer,
       );
     } else {
       expect.fail();
@@ -159,5 +159,5 @@ describe("deserialize", () => {
     const result = deserialize(source, NullModel);
     expect(result?.skipNullValue).equals(null);
     expect(result?.handleNullValue).equals("is null");
-  })
+  });
 });

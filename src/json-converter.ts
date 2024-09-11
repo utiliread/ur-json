@@ -4,7 +4,7 @@ export interface JsonConverter {
    * The default value is false.
    */
   handleNull?: boolean;
-  
+
   /**
    * Indicates whether `undefined` should be passed to the converter on serialization.
    * The default value is false.
@@ -20,7 +20,7 @@ export interface JsonConverterOfT<T> {
    * The default value is false.
    */
   handleNull?: boolean;
-  
+
   /**
    * Indicates whether `undefined` should be passed to the converter on serialization.
    * The default value is false.

@@ -6,14 +6,14 @@ import { decode } from "base64-arraybuffer";
 
 export function deserializeString<T>(
   json: string,
-  type: { new (): T }
+  type: { new (): T },
 ): T | null | undefined {
   return deserialize(JSON.parse(json), type);
 }
 
 export function deserialize<T>(
   source: any,
-  type: { new (): T }
+  type: { new (): T },
 ): T | null | undefined {
   if (source === undefined) {
     return source;
@@ -55,7 +55,7 @@ export function deserialize<T>(
         source,
         destination,
         propertyName,
-        propertyMetadata
+        propertyMetadata,
       );
     } else if (source[propertyName] !== undefined) {
       destination[propertyName] = source[propertyName];
@@ -69,7 +69,7 @@ function getValue<T>(
   source: any,
   destination: T,
   key: string,
-  propertyMetadata: JsonMetadata
+  propertyMetadata: JsonMetadata,
 ) {
   const propertyName = propertyMetadata.name ?? key;
   const propertyType = getPropertyType(destination, key);
@@ -83,7 +83,7 @@ function getValue<T>(
     if (fromJsonConverter) {
       if (isArray(source[propertyName])) {
         return source[propertyName].map((item: any) =>
-          runConverter(fromJsonConverter, item)
+          runConverter(fromJsonConverter, item),
         );
       } else {
         return runConverter(fromJsonConverter, source[propertyName]);
@@ -129,7 +129,7 @@ function getPropertyType(destination: any, propertyKey: string) {
     const propertyType = Reflect.getOwnMetadata(
       "design:type",
       target,
-      propertyKey
+      propertyKey,
     );
     if (propertyType) {
       return propertyType;

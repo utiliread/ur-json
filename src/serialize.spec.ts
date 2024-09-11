@@ -17,7 +17,7 @@ describe("serialize", () => {
     const result = serialize(source);
 
     expect(result).to.equal(
-      '{"number":1337,"string":"hello","arrayBuffer":"Ezc="}'
+      '{"number":1337,"string":"hello","arrayBuffer":"Ezc="}',
     );
   });
 });

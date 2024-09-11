@@ -30,21 +30,21 @@ export function jsonProperty(nameOrMetadata?: string | JsonMetadata) {
       PROPERTY_METADATA_KEY,
       metadata,
       target,
-      propertyKey
+      propertyKey,
     );
   };
 }
 
 export function getPropertyMetadata(
   instance: any,
-  propertyKey: string
+  propertyKey: string,
 ): JsonMetadata | undefined {
   let target = Object.getPrototypeOf(instance);
   while (target !== Object.prototype) {
     const metadata = Reflect.getOwnMetadata(
       PROPERTY_METADATA_KEY,
       target,
-      propertyKey
+      propertyKey,
     );
     if (metadata) {
       return metadata;
@@ -59,7 +59,7 @@ export function getPropertyNames(instance: any): string[] {
   while (target !== Object.prototype) {
     const propertyNames = Reflect.getOwnMetadata(
       PROPERTY_NAMES_METADATA_KEY,
-      target
+      target,
     );
     if (propertyNames) {
       names.push(...propertyNames);

@@ -8,35 +8,31 @@
   "sideEffects": false,
   "scripts": {
     "build": "parcel build",
-    "test": "karma start --single-run --browsers ChromeHeadless karma.config.js",
-    "watch": "karma start --auto-watch --browsers ChromeDebugging karma.config.js",
-    "clean": "rimraf dist"
+    "prettier": "prettier --write *.mjs src/**/*.ts",
+    "test": "tsc -p tsconfig.test.json && web-test-runner",
+    "clean": "rimraf .build dist"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
     "@parcel/packager-ts": "^2.5.0",
-    "@parcel/transformer-typescript-types": "^2.5.0",
-    "@types/base64-arraybuffer": "^0.2.0",
+    "@parcel/transformer-typescript-types": "^2.12.0",
     "@types/chai": "^4.2.16",
     "@types/luxon": "^3.0.1",
     "@types/mocha": "^10.0.0",
-    "chai": "^4.3.4",
-    "karma": "^6.3.2",
-    "karma-chai": "^0.1.0",
-    "karma-chrome-launcher": "^3.1.0",
-    "karma-mocha": "^2.0.1",
-    "karma-typescript": "^5.5.1",
+    "@web/test-runner": "^0.19.0",
+    "chai": "^5.1.1",
     "luxon": "^3.0.4",
     "mocha": "^10.0.0",
     "parcel": "^2.5.0",
-    "reflect-metadata": "^0.1.13",
-    "rimraf": "^5.0.1",
+    "reflect-metadata": "^0.2.2",
+    "rimraf": "^6.0.1",
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "base64-arraybuffer": "^1.0.1"
+    "base64-arraybuffer": "^1.0.1",
+    "prettier": "^3.3.3"
   },
   "peerDependencies": {
     "luxon": "^2.1.0 || ^3.0.0"
