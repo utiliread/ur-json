@@ -6,7 +6,7 @@
     "declaration": true,
     "sourceMap": true,
     "experimentalDecorators": true,
-    // @parcel/transformer-typescript-tsc transformer is required for emitDecoratorMetadata=true to work,
+    // @parcel/transformer-typescript-tsc transformer is required for emitDecoratorMetadata=true to actually emit "design:type" metadata,
     // see https://parceljs.org/getting-started/migration/#typescript
     "emitDecoratorMetadata": false,
     "strict": true,
