@@ -1,17 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ES2018",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "declaration": true,
     "sourceMap": true,
     "experimentalDecorators": true,
-    // @parcel/transformer-typescript-tsc transformer is required for emitDecoratorMetadata=true to actually emit "design:type" metadata,
-    // see https://parceljs.org/getting-started/migration/#typescript
     "emitDecoratorMetadata": false,
     "strict": true,
     "rootDir": "src",
-    "lib": ["ES2018"],
+    "outDir": "dist",
+    "lib": ["ES2020"],
     "types": ["mocha", "reflect-metadata"]
   }
 }
