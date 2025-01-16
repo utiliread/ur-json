@@ -7,6 +7,23 @@ const PROPERTY_NAMES_METADATA_KEY = "jsonPropertyNames";
  * Attribute specifying a property to be serialized
  * @param nameOrMetadata The name of the json property or metadata describing how to construct the property
  */
+export function jsonProperty(): (
+  target: Object,
+  contextOrPropertyKey: ClassFieldDecoratorContext | string
+) => void;
+export function jsonProperty(
+  name: string
+): (
+  target: Object,
+  contextOrPropertyKey: ClassFieldDecoratorContext | string
+) => void;
+export function jsonProperty(
+  metadata: JsonMetadata
+): (
+  target: Object,
+  contextOrPropertyKey: ClassFieldDecoratorContext | string
+) => void;
+
 export function jsonProperty(nameOrMetadata?: string | JsonMetadata) {
   let metadata: JsonMetadata = {};
 
@@ -20,7 +37,14 @@ export function jsonProperty(nameOrMetadata?: string | JsonMetadata) {
     throw "Only one of type or converter can be specified";
   }
 
-  return function (target: Object, propertyKey: string) {
+  return function (
+    target: Object,
+    contextOrPropertyKey: ClassFieldDecoratorContext | string
+  ) {
+    const propertyKey =
+      typeof contextOrPropertyKey === "string"
+        ? contextOrPropertyKey
+        : contextOrPropertyKey.name;
     const propertyNames =
       Reflect.getOwnMetadata(PROPERTY_NAMES_METADATA_KEY, target) || [];
 
@@ -30,21 +54,21 @@ export function jsonProperty(nameOrMetadata?: string | JsonMetadata) {
       PROPERTY_METADATA_KEY,
       metadata,
       target,
-      propertyKey,
+      propertyKey
     );
   };
 }
 
 export function getPropertyMetadata(
   instance: any,
-  propertyKey: string,
+  propertyKey: string
 ): JsonMetadata | undefined {
   let target = Object.getPrototypeOf(instance);
   while (target !== Object.prototype) {
     const metadata = Reflect.getOwnMetadata(
       PROPERTY_METADATA_KEY,
       target,
-      propertyKey,
+      propertyKey
     );
     if (metadata) {
       return metadata;
@@ -59,7 +83,7 @@ export function getPropertyNames(instance: any): string[] {
   while (target !== Object.prototype) {
     const propertyNames = Reflect.getOwnMetadata(
       PROPERTY_NAMES_METADATA_KEY,
-      target,
+      target
     );
     if (propertyNames) {
       names.push(...propertyNames);
