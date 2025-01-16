@@ -53,7 +53,6 @@ export function deserialize<T>(
     if (propertyMetadata) {
       destination[propertyName] = getValue(
         source,
-        destination,
         propertyName,
         propertyMetadata,
       );
@@ -65,40 +64,21 @@ export function deserialize<T>(
   return destination;
 }
 
-function getValue<T>(
-  source: any,
-  destination: T,
-  key: string,
-  propertyMetadata: JsonMetadata,
-) {
+function getValue(source: any, key: string, propertyMetadata: JsonMetadata) {
   const propertyName = propertyMetadata.name ?? key;
-  const propertyType = getPropertyType(destination, key);
+  const propertyType = propertyMetadata.type;
   const fromJsonConverter = propertyMetadata.converter?.fromJson
     ? propertyMetadata.converter
     : undefined;
 
-  if (isArray(propertyType)) {
-    const type = propertyMetadata.type;
-
-    if (fromJsonConverter) {
-      if (isArray(source[propertyName])) {
-        return source[propertyName].map((item: any) =>
-          runConverter(fromJsonConverter, item),
-        );
-      } else {
-        return runConverter(fromJsonConverter, source[propertyName]);
-      }
-    } else if (type) {
-      if (isArray(source[propertyName])) {
-        return source[propertyName].map((item: any) => deserialize(item, type));
-      } else {
-        return undefined;
-      }
-    }
-  }
-
   if (fromJsonConverter) {
-    return runConverter(fromJsonConverter, source[propertyName]);
+    if (isArray(source[propertyName])) {
+      return source[propertyName].map((item: any) =>
+        runConverter(fromJsonConverter, item),
+      );
+    } else {
+      return runConverter(fromJsonConverter, source[propertyName]);
+    }
   } else if (propertyType === ArrayBuffer) {
     const value = source[propertyName];
     if (typeof value === "string") {
@@ -106,8 +86,14 @@ function getValue<T>(
     } else {
       return value; // null or undefined;
     }
-  } else if (!isPrimitive(propertyType)) {
-    return deserialize(source[propertyName], propertyType);
+  } else if (propertyType) {
+    if (isArray(source[propertyName])) {
+      return source[propertyName].map((item: any) =>
+        deserialize(item, propertyType),
+      );
+    } else {
+      return deserialize(source[propertyName], propertyType);
+    }
   } else {
     return source[propertyName];
   }
@@ -123,21 +109,6 @@ function runConverter(converter: JsonConverter, source: any) {
   return converter.fromJson!(source);
 }
 
-function getPropertyType(destination: any, propertyKey: string) {
-  let target = Object.getPrototypeOf(destination);
-  while (target !== Object.prototype) {
-    const propertyType = Reflect.getOwnMetadata(
-      "design:type",
-      target,
-      propertyKey,
-    );
-    if (propertyType) {
-      return propertyType;
-    }
-    target = Object.getPrototypeOf(target);
-  }
-}
-
 function isArray(object: any) {
   if (object === Array) {
     return true;
@@ -146,21 +117,4 @@ function isArray(object: any) {
   } else {
     return object instanceof Array;
   }
-}
-
-function isPrimitive(object: any) {
-  switch (typeof object) {
-    case "string":
-    case "number":
-    case "boolean":
-      return true;
-  }
-  return (
-    object instanceof String ||
-    object === String ||
-    object instanceof Number ||
-    object === Number ||
-    object instanceof Boolean ||
-    object === Boolean
-  );
 }

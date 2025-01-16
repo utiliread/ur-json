@@ -6,6 +6,13 @@ import { JsonConverter } from "./json-converter";
 import { expect } from "chai";
 import { jsonProperty } from "./index";
 
+(<any>Symbol).metadata ??= Symbol("Symbol.metadata");
+
+class Item {
+  @jsonProperty()
+  id!: string;
+}
+
 class Model {
   @jsonProperty()
   number!: number;
@@ -15,8 +22,10 @@ class Model {
   numberArray!: number[];
   @jsonProperty()
   stringArray!: string[];
-  @jsonProperty()
+  @jsonProperty({ type: ArrayBuffer })
   arrayBuffer!: ArrayBuffer;
+  @jsonProperty({ type: Item })
+  items!: Item[];
 }
 
 class Model2 {
@@ -24,8 +33,10 @@ class Model2 {
   string?: string = undefined;
   numberArray?: number[] = undefined;
   stringArray?: string[] = undefined;
-  @jsonProperty()
+  @jsonProperty({ type: ArrayBuffer })
   arrayBuffer?: ArrayBuffer = undefined;
+  @jsonProperty({ type: Item })
+  items?: Item[] = undefined;
 }
 
 class PlusOneConverter implements JsonConverter {
@@ -111,7 +122,7 @@ describe("deserialize", () => {
 
   it("should correctly deserialize to model", () => {
     const source = JSON.parse(
-      '{"number":1337,"string":"hello","numberArray":[1,2],"stringArray":["a","b"],"arrayBuffer":"Ezc="}',
+      '{"number":1337,"string":"hello","numberArray":[1,2],"stringArray":["a","b"],"arrayBuffer":"Ezc=","items":[{"id":1}]}',
     );
     const result = deserialize(source, Model);
 
@@ -123,6 +134,8 @@ describe("deserialize", () => {
       expect(result.arrayBuffer).deep.equals(
         new Uint8Array([0x13, 0x37]).buffer,
       );
+      expect(result.items[0]).instanceOf(Item);
+      expect(result.items[0].id).equals(1);
     } else {
       expect.fail();
     }
@@ -130,7 +143,7 @@ describe("deserialize", () => {
 
   it("should correctly deserialize to model2", () => {
     const source = JSON.parse(
-      '{"number":1337,"string":"hello","numberArray":[1,2],"stringArray":["a","b"],"arrayBuffer":"Ezc="}',
+      '{"number":1337,"string":"hello","numberArray":[1,2],"stringArray":["a","b"],"arrayBuffer":"Ezc=","items":[{"id":1}]}',
     );
     const result = deserialize(source, Model2);
 
@@ -142,6 +155,8 @@ describe("deserialize", () => {
       expect(result.arrayBuffer).deep.equals(
         new Uint8Array([0x13, 0x37]).buffer,
       );
+      expect(result.items?.[0]).instanceOf(Item);
+      expect(result.items?.[0].id).equals(1);
     } else {
       expect.fail();
     }
