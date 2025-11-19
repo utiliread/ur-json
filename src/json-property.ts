@@ -13,21 +13,21 @@ const typePropertyNames = new Map<DecoratorMetadataObject, string[]>();
 export function jsonProperty<Target>(): (
   target: Target,
   contextOrPropertyKey: ClassFieldDecoratorContext | string,
-  descriptor?: PropertyDescriptor
+  descriptor?: PropertyDescriptor,
 ) => void;
 export function jsonProperty<Target>(
-  name: string
+  name: string,
 ): (
   target: Target,
   contextOrPropertyKey: ClassFieldDecoratorContext | string,
-  descriptor?: PropertyDescriptor
+  descriptor?: PropertyDescriptor,
 ) => void;
 export function jsonProperty<Target>(
-  metadata: JsonMetadata
+  metadata: JsonMetadata,
 ): (
   target: Target,
   contextOrPropertyKey: ClassFieldDecoratorContext | string,
-  descriptor?: PropertyDescriptor
+  descriptor?: PropertyDescriptor,
 ) => void;
 
 export function jsonProperty<Target>(nameOrMetadata?: string | JsonMetadata) {
@@ -44,7 +44,7 @@ export function jsonProperty<Target>(nameOrMetadata?: string | JsonMetadata) {
 
   return function (
     target: Target,
-    contextOrPropertyKey: ClassFieldDecoratorContext | string
+    contextOrPropertyKey: ClassFieldDecoratorContext | string,
   ) {
     if (typeof contextOrPropertyKey !== "string") {
       // Typescript 5
@@ -57,13 +57,13 @@ export function jsonProperty<Target>(nameOrMetadata?: string | JsonMetadata) {
 
       if (context.static || context.private) {
         throw new Error(
-          `[${context.name}] Can only serialize public instance members.`
+          `[${context.name}] Can only serialize public instance members.`,
         );
       }
 
       if (context.metadata === undefined) {
         throw new Error(
-          "Context metadata not available. Is Symbol.metadata defined?"
+          "Context metadata not available. Is Symbol.metadata defined?",
         );
       }
 
@@ -89,13 +89,13 @@ export function jsonProperty<Target>(nameOrMetadata?: string | JsonMetadata) {
       Reflect.defineMetadata(
         PROPERTY_NAMES_METADATA_KEY,
         propertyNames,
-        targetObj
+        targetObj,
       );
       Reflect.defineMetadata(
         PROPERTY_METADATA_KEY,
         metadata,
         targetObj,
-        propertyKey
+        propertyKey,
       );
     }
   };
@@ -103,7 +103,7 @@ export function jsonProperty<Target>(nameOrMetadata?: string | JsonMetadata) {
 
 export function getPropertyMetadata(
   instance: any,
-  propertyKey: string
+  propertyKey: string,
 ): JsonMetadata | undefined {
   let target = Object.getPrototypeOf(instance);
   while (target !== Object.prototype) {
@@ -121,13 +121,13 @@ export function getPropertyMetadata(
       metadata = Reflect.getOwnMetadata(
         PROPERTY_METADATA_KEY,
         target,
-        propertyKey
+        propertyKey,
       );
       if (metadata) {
         return metadata;
       }
     }
-    
+
     target = Object.getPrototypeOf(target);
   }
 }
@@ -148,7 +148,7 @@ export function getPropertyNames(instance: any): string[] {
     if (Reflect.getOwnMetadata) {
       const propertyNames = Reflect.getOwnMetadata(
         PROPERTY_NAMES_METADATA_KEY,
-        target
+        target,
       );
       if (propertyNames) {
         names.push(...propertyNames);
