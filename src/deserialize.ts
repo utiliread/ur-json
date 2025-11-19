@@ -66,7 +66,7 @@ export function deserialize<T>(
 
 function getValue(source: any, key: string, propertyMetadata: JsonMetadata) {
   const propertyName = propertyMetadata.name ?? key;
-  const propertyType = propertyMetadata.type;
+  const propertyType = propertyMetadata.type ?? propertyMetadata.typeAccessor?.();
   const fromJsonConverter = propertyMetadata.converter?.fromJson
     ? propertyMetadata.converter
     : undefined;

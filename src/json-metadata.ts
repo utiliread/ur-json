@@ -12,6 +12,11 @@ export interface JsonMetadata {
   type?: { new (): any };
 
   /**
+   * The accessor used to get the type to construct the property instance
+   */
+  typeAccessor?: () => { new (): any };
+
+  /**
    * The converter
    */
   converter?: JsonConverter;

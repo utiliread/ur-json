@@ -38,8 +38,8 @@ export function jsonProperty<Target>(nameOrMetadata?: string | JsonMetadata) {
     metadata = nameOrMetadata;
   }
 
-  if (!!metadata.type && !!metadata.converter) {
-    throw "Only one of type or converter can be specified";
+  if (!!metadata.type && !!metadata.typeAccessor && !!metadata.converter) {
+    throw "Only one of type, typeAccessor or converter can be specified";
   }
 
   return function (
