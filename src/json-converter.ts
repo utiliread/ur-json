@@ -10,6 +10,14 @@ export interface JsonConverter {
    * The default value is false.
    */
   handleUndefined?: boolean;
+
+  /**
+   * Indicates whether arrays should be passed to the converter on serialization,
+   * or if each element should be processed individually.
+   * The default value is false.
+   */
+  handleArray?: boolean;
+
   toJson?(source: any): any;
   fromJson?(source: any): any;
 }
@@ -26,6 +34,14 @@ export interface JsonConverterOfT<T> {
    * The default value is false.
    */
   handleUndefined?: boolean;
+  
+  /**
+   * Indicates whether arrays should be passed to the converter on serialization,
+   * or if each element should be processed individually.
+   * The default value is false.
+   */
+  handleArray?: boolean;
+
   toJson?(source: T): any;
   fromJson?(source: any): T;
 }

@@ -73,11 +73,26 @@ class HandleNullConverter implements JsonConverter {
   }
 }
 
+class HandleArrayConverter implements JsonConverter {
+  public static readonly instance = new HandleArrayConverter();
+  get handleArray() {
+    return true;
+  }
+  fromJson(value: any) {
+    return Array.isArray(value) ? "is array" : "is not array";
+  }
+}
+
 class NullModel {
   @jsonProperty()
   skipNullValue!: string | null;
   @jsonProperty({ converter: HandleNullConverter.instance })
   handleNullValue!: string;
+}
+
+class ArrayModel {
+  @jsonProperty({ converter: HandleArrayConverter.instance })
+  arrayValue!: string;
 }
 
 describe("deserialize", () => {
@@ -174,5 +189,11 @@ describe("deserialize", () => {
     const result = deserialize(source, NullModel);
     expect(result?.skipNullValue).equals(null);
     expect(result?.handleNullValue).equals("is null");
+  });
+
+  it("should pass array to converter if handleArray is true", () => {
+    const source = JSON.parse('{"arrayValue":[1,2,3]}');
+    const result = deserialize(source, ArrayModel);
+    expect(result?.arrayValue).equals("is array");
   });
 });

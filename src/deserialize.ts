@@ -72,7 +72,7 @@ function getValue(source: any, key: string, propertyMetadata: JsonMetadata) {
     : undefined;
 
   if (fromJsonConverter) {
-    if (isArray(source[propertyName])) {
+    if (isArray(source[propertyName]) && !fromJsonConverter.handleArray) {
       return source[propertyName].map((item: any) =>
         runConverter(fromJsonConverter, item),
       );
